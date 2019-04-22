@@ -16,7 +16,18 @@ function createTrackRouter({ store }) {
       userAgent: ctx.get('user-agent'),
     })
 
-    ctx.body = { message: 'success!' }
+    ctx.body = { ok: true }
+  })
+
+  router.post('/pageview', async ctx => {
+    const { sessionId, url } = ctx.request.body
+
+    await store.repositories.pageview.create({
+      sessionId,
+      url,
+    })
+
+    ctx.body = { ok: true }
   })
 
   return router

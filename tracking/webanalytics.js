@@ -57,7 +57,14 @@ async function webanalytics(url) {
     return visitorId
   }
 
-  await getSessionId()
+  async function trackPageView() {
+    const response = await post('/track/pageview', {
+      sessionId: await getSessionId(),
+      url: window.location.href
+    })
+  }
+
+  await trackPageView()
 }
 
 window.webanalytics = webanalytics
