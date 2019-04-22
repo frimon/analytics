@@ -2,10 +2,12 @@
 
 const { config } = require('./config')
 const { createHttpServer } = require('./http')
+const { createStore } = require('./store')
 
-function start() {
+async function start() {
 
-  const httpServer = createHttpServer()
+  const store = await createStore()
+  const httpServer = createHttpServer({ store })
   httpServer.listen(config.http.port)
   console.log(`Listening to port ${config.http.port}`)
 }

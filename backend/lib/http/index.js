@@ -2,13 +2,15 @@
 
 const Koa = require('koa')
 const bodyparser = require('koa-bodyparser')
+const cors = require('@koa/cors')
 const { createRouter } = require('./router')
 
-function createHttpServer() {
+function createHttpServer({ store }) {
 
   const app = new Koa()
-  const router = createRouter()
+  const router = createRouter({ store })
 
+  app.use(cors())
   app.use(bodyparser())
   app.use(router.routes(), router.allowedMethods())
 
