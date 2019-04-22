@@ -20,6 +20,10 @@ const schema = {
     required: true,
   },
   referer: String,
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
   // campaign?
 }
 
