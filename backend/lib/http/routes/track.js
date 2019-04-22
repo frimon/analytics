@@ -30,6 +30,18 @@ function createTrackRouter({ store }) {
     ctx.body = { ok: true }
   })
 
+  router.post('/event', async ctx => {
+    const { sessionId, name, payload } = ctx.request.body
+
+    await store.repositories.event.create({
+      sessionId,
+      name,
+      payload,
+    })
+
+    ctx.body = { ok: true }
+  })
+
   return router
 }
 

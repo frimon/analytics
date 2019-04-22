@@ -60,11 +60,21 @@ async function webanalytics(url) {
   async function trackPageView() {
     const response = await post('/track/pageview', {
       sessionId: await getSessionId(),
-      url: window.location.href
+      url: window.location.href,
+    })
+  }
+
+  async function trackEvent(name, payload) {
+    const response = await post('/track/event', {
+      sessionId: await getSessionId(),
+      name,
+      payload,
     })
   }
 
   await trackPageView()
+
+  window.webanalytics.trackEvent = trackEvent
 }
 
 window.webanalytics = webanalytics
