@@ -1,7 +1,6 @@
 'use strict'
 
 const KoaRouter = require('koa-router')
-const ip = require('ip')
 
 function createTrackRouter({ store }) {
   const router = new KoaRouter({ prefix: '/track' })
@@ -9,10 +8,12 @@ function createTrackRouter({ store }) {
   router.post('/session', async ctx => {
     const { sessionId, visitorId, referer } = ctx.request.body
 
+    const ip = ctx.request.ip === '::1' ? '127.0.0.1' : ctx.request.ip // to support local testing
+
     await store.repositories.session.create(sessionId, {
       visitorId,
       referer,
-      ip: ip.toBuffer(ctx.request.ip),
+      ip,
       userAgent: ctx.get('user-agent'),
     })
 

@@ -1,31 +1,19 @@
 'use strict'
 
-const mongoose = require('mongoose')
-const { config } = require('../config')
+const knex = require('knex')
+const knexConfig = require('../../knexfile')
 const { SessionRepository, PageViewRepository, EventRepository } = require('./repositories')
-
 
 async function createStore() {
 
-  const db = mongoose.createConnection(config.mongo.uri, { useNewUrlParser: true })
-
-  const session = new SessionRepository(db)
-  const pageview = new PageViewRepository(db)
-  const event = new EventRepository(db)
-
-  await Promise.all([
-    session.init(),
-    pageview.init(),
-    event.init(),
-  ])
+  const db = knex(knexConfig)
 
   return {
     repositories: {
-      session,
-      pageview,
-      event,
+      session: new SessionRepository(db),
+      pageview: new PageViewRepository(db),
+      event: new EventRepository(db),
     },
-    close: () => new Promise(resolve => db.close(false, () => resolve())),
   }
 }
 

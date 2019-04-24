@@ -1,36 +1,15 @@
 'use strict'
 
-const { Schema } = require('mongoose')
+const { Repository } = require('./Repository')
 
-const schema = {
-  sessionId: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: new Date(),
-  },
-  url: {
-    type: String,
-    required: true,
-  },
-}
+class PageViewRepository extends Repository {
 
-class PageViewRepository {
+  create({ sessionId, url }) {
 
-  constructor(db) {
-    this.db = db
-  }
-
-  async init() {
-
-    const modelSchema = new Schema(schema, { versionKey: false })
-    this.model = this.db.model('PageView', modelSchema, 'pageViews')
-  }
-
-  create(data) {
-    return this.model.create(data)
+    return this.db('page_views').insert({
+      session_id: sessionId,
+      url,
+    })
   }
 }
 

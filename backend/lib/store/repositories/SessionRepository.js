@@ -1,46 +1,22 @@
 'use strict'
 
-const { Schema } = require('mongoose')
+const ipInt = require('ip-to-int')
+const { Repository } = require('./Repository')
 
-const schema = {
-  _id: {
-    type: String,
-    required: true,
-  },
-  visitorId: {
-    type: String,
-    required: true,
-  },
-  ip: {
-    type: Buffer,
-    required: true,
-  },
-  userAgent: {
-    type: String,
-    required: true,
-  },
-  referer: String,
-  createdAt: {
-    type: Date,
-    default: new Date(),
-  },
-  // campaign?
-}
-
-class SessionRepository {
-
-  constructor(db) {
-    this.db = db
-  }
-
-  async init() {
-
-    const modelSchema = new Schema(schema, { versionKey: false })
-    this.model = this.db.model('Session', modelSchema, 'sessions')
-  }
+class SessionRepository extends Repository {
 
   create(id, data) {
-    return this.model.create({ _id: id, ...data })
+
+    const { visitorId, referer, userAgent } = data
+    const ip = ipInt(data.ip).toInt()
+
+    return this.db('sessions').insert({
+      id,
+      visitor_id: visitorId,
+      referer,
+      ip,
+      user_agent: userAgent,
+    })
   }
 }
 

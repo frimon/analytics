@@ -1,37 +1,16 @@
 'use strict'
 
-const { Schema } = require('mongoose')
+const { Repository } = require('./Repository')
 
-const schema = {
-  sessionId: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  payload: Object,
-  createdAt: {
-    type: Date,
-    default: new Date(),
-  },
-}
+class EventRepository extends Repository {
 
-class EventRepository {
+  create({ sessionId, name, payload }) {
 
-  constructor(db) {
-    this.db = db
-  }
-
-  async init() {
-
-    const modelSchema = new Schema(schema, { versionKey: false })
-    this.model = this.db.model('Event', modelSchema, 'events')
-  }
-
-  create(data) {
-    return this.model.create(data)
+    return this.db('events').insert({
+      session_id: sessionId,
+      name,
+      payload,
+    })
   }
 }
 
