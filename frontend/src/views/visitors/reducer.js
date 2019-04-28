@@ -2,10 +2,7 @@ import Immutable from 'immutable'
 
 const actionPrefix = '@@VISITORS'
 const initialState = Immutable.fromJS({
-  data: [
-    [{ type: 'date', label: 'Day' }, 'x', 'dogs'],
-    [0, 0],
-  ],
+  data: [],
 })
 
 export default (state = initialState, action) => {
