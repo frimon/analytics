@@ -7,6 +7,8 @@ import UniqueVisitorLineChart from '../unique-visitors/UniqueVisitorLineChart'
 import UniqueVisitorAggregation from '../unique-visitors/UniqueVisitorAggregation'
 import PageViewsLineChart from '../page-views/PageViewsLineChart'
 import PageViewsAggregation from '../page-views/PageViewsAggregation'
+import AverageSessionLengthLineChart from '../average-session-length/AverageSessionLengthLineChart'
+import AverageSessionLengthAggregation from '../average-session-length/AverageSessionLengthAggregation'
 
 
 const Overview = () => (
@@ -26,7 +28,7 @@ const Overview = () => (
         </Grid.Column>
 
         <Grid.Column color="blue" textAlign="center">
-          <h1>To be added</h1>
+          <AverageSessionLengthAggregation />
         </Grid.Column>
       </Grid.Row>
 
@@ -46,7 +48,7 @@ const Overview = () => (
         </Grid.Column>
 
         <Grid.Column width="8" textAlign="center" verticalAlign="middle">
-          <h1>To Be Added</h1>
+          <AverageSessionLengthLineChart />
         </Grid.Column>
       </Grid.Row>
     </Grid>
