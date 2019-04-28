@@ -1,11 +1,12 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { Container, Grid } from 'semantic-ui-react'
-import { connect } from 'react-redux'
 import VisitorLineChart from '../visitors/VisitorLineChart'
 import VisitorAggregation from '../visitors/VisitorAggregation'
 import UniqueVisitorLineChart from '../unique-visitors/UniqueVisitorLineChart'
 import UniqueVisitorAggregation from '../unique-visitors/UniqueVisitorAggregation'
+import PageViewsLineChart from '../page-views/PageViewsLineChart'
+import PageViewsAggregation from '../page-views/PageViewsAggregation'
 
 
 const Overview = () => (
@@ -21,7 +22,7 @@ const Overview = () => (
         </Grid.Column>
 
         <Grid.Column color="blue" textAlign="center">
-          <h1>To be added</h1>
+          <PageViewsAggregation />
         </Grid.Column>
 
         <Grid.Column color="blue" textAlign="center">
@@ -38,16 +39,18 @@ const Overview = () => (
           <UniqueVisitorLineChart />
         </Grid.Column>
       </Grid.Row>
+
+      <Grid.Row>
+        <Grid.Column width="8">
+          <PageViewsLineChart />
+        </Grid.Column>
+
+        <Grid.Column width="8" textAlign="center" verticalAlign="middle">
+          <h1>To Be Added</h1>
+        </Grid.Column>
+      </Grid.Row>
     </Grid>
   </Container>
 )
 
-function mapStateToProps(applicationState) {
-  const visitorState = applicationState.visitors
-
-  return {
-    data: visitorState.get('data').toJS(),
-  }
-}
-
-export default connect(mapStateToProps)(withRouter(Overview))
+export default withRouter(Overview)
