@@ -4,6 +4,8 @@ import { Container, Grid } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import VisitorLineChart from '../visitors/VisitorLineChart'
 import VisitorAggregation from '../visitors/VisitorAggregation'
+import UniqueVisitorLineChart from '../unique-visitors/UniqueVisitorLineChart'
+import UniqueVisitorAggregation from '../unique-visitors/UniqueVisitorAggregation'
 
 
 const Overview = () => (
@@ -15,7 +17,7 @@ const Overview = () => (
         </Grid.Column>
 
         <Grid.Column color="blue" textAlign="center" stretched>
-          <h1>To be added</h1>
+          <UniqueVisitorAggregation />
         </Grid.Column>
 
         <Grid.Column color="blue" textAlign="center">
@@ -32,8 +34,8 @@ const Overview = () => (
           <VisitorLineChart />
         </Grid.Column>
 
-        <Grid.Column width="8" textAlign="center" verticalAlign="middle">
-          <h1>To be added</h1>
+        <Grid.Column width="8">
+          <UniqueVisitorLineChart />
         </Grid.Column>
       </Grid.Row>
     </Grid>
