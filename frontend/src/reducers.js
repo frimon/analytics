@@ -5,6 +5,7 @@ import visitors from './views/visitors/reducer'
 import uniqueVisitors from './views/unique-visitors/reducer'
 import pageViews from './views/page-views/reducer'
 import averageSessionLength from './views/average-session-length/reducer'
+import bounceRate from './views/bounce-rate/reducer'
 
 export default combineReducers({
   global,
@@ -13,4 +14,5 @@ export default combineReducers({
   uniqueVisitors,
   pageViews,
   averageSessionLength,
+  bounceRate,
 })
