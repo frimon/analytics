@@ -17,19 +17,19 @@ const Overview = () => (
   <Container>
     <Grid padded columns="equal">
       <Grid.Row>
-        <Grid.Column tablet="8" computer="3" color="blue" textAlign="center">
+        <Grid.Column stretched tablet="8" computer="3" color="blue" textAlign="center">
           <VisitorAggregation />
         </Grid.Column>
 
-        <Grid.Column tablet="8" computer="3" color="blue" textAlign="center">
+        <Grid.Column stretched tablet="8" computer="3" color="blue" textAlign="center">
           <UniqueVisitorAggregation />
         </Grid.Column>
 
-        <Grid.Column tablet="8" computer="3" color="blue" textAlign="center">
+        <Grid.Column stretched tablet="8" computer="3" color="blue" textAlign="center">
           <PageViewsAggregation />
         </Grid.Column>
 
-        <Grid.Column tablet="8" computer="3" color="blue" textAlign="center">
+        <Grid.Column stretched tablet="8" computer="3" color="blue" textAlign="center">
           <AverageSessionLengthAggregation />
         </Grid.Column>
 

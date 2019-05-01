@@ -20,8 +20,13 @@ const MenuComponent = (props) => {
 
   return (
     <Menu>
-      <Menu.Item link active={props.location.pathname === '/'}>Overview</Menu.Item>
-      <Menu.Item link>Events</Menu.Item>
+      <Menu.Item link href="/" active={props.location.pathname === '/'}>
+        Overview
+      </Menu.Item>
+
+      <Menu.Item link href="/events" active={props.location.pathname === '/events'}>
+        Events
+      </Menu.Item>
 
       <Modal trigger={modalTrigger}>
         <Modal.Header>Change date interval</Modal.Header>
