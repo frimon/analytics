@@ -4,23 +4,19 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import LineChart from '../charts/LineChart'
 import { fetchData } from './actions'
+import { transformData } from '../helpers/googleChartHelpers'
 
 const UniqueVisitorLineChart = (props) => {
-  function tranformData(data) {
-    const transformRow = ([date, value]) => [new Date(date), value]
-    const dataHeader = [
-      { type: 'date', label: 'Day' }, 'Unique Visitors',
-    ]
-
-    return [dataHeader, ...data.map(transformRow)]
-  }
+  const horizontalAxis = { type: 'date', label: 'Day' }
+  const lineLabel = 'Unique Visitors'
+  const plotData = transformData(props.data, horizontalAxis, [lineLabel])
 
   return (
     <LineChart
       chartType="LineChart"
       chartName=""
       height="300px"
-      data={tranformData(props.data)}
+      data={plotData}
       fetchData={props.fetchData}
       fromDate={props.fromDate}
       toDate={props.toDate}

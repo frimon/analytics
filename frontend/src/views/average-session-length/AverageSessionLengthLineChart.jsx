@@ -4,23 +4,19 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import LineChart from '../charts/LineChart'
 import { fetchData } from './actions'
+import { transformData } from '../helpers/googleChartHelpers'
 
 const AverageSessionLengthLineChart = (props) => {
-  function tranformData(data) {
-    const transformRow = ([date, value]) => [new Date(date), value]
-    const dataHeader = [
-      { type: 'date', label: 'Day' }, 'Average Session Length',
-    ]
-
-    return [dataHeader, ...data.map(transformRow)]
-  }
+  const horizontalAxis = { type: 'date', label: 'Day' }
+  const lineLabel = 'Average Session Length'
+  const plotData = transformData(props.data, horizontalAxis, [lineLabel])
 
   return (
     <LineChart
       chartType="LineChart"
       chartName=""
       height="300px"
-      data={tranformData(props.data)}
+      data={plotData}
       fetchData={props.fetchData}
       fromDate={props.fromDate}
       toDate={props.toDate}
@@ -30,6 +26,7 @@ const AverageSessionLengthLineChart = (props) => {
     />
   )
 }
+
 
 AverageSessionLengthLineChart.propTypes = {
   data: PropTypes.array.isRequired,

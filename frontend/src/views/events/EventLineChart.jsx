@@ -4,27 +4,23 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import LineChart from '../charts/LineChart'
 import { fetchData } from './actions'
+import { transformData } from '../helpers/googleChartHelpers'
 
 const EventLineChart = (props) => {
-  function tranformData(data) {
-    const transformRow = ([date, value]) => [new Date(date), value]
-    const dataHeader = [
-      { type: 'date', label: 'Day' }, 'Events',
-    ]
-
-    return [dataHeader, ...data.map(transformRow)]
-  }
-
   if (!props.events[props.eventName]) {
     return (<h1>Loading</h1>)
   }
+
+  const horizontalAxis = { type: 'date', label: 'Day' }
+  const lineLabel = 'Events'
+  const plotData = transformData(props.events[props.eventName], horizontalAxis, [lineLabel])
 
   return (
     <LineChart
       chartType="LineChart"
       chartName=""
       height="300px"
-      data={tranformData(props.events[props.eventName])}
+      data={plotData}
       fetchData={props.fetchData}
       fromDate={props.fromDate}
       toDate={props.toDate}

@@ -4,33 +4,27 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import LineChart from '../charts/LineChart'
 import { fetchData } from './actions'
+import { transformData } from '../helpers/googleChartHelpers'
 
-class VisitorLineChart extends React.PureComponent {
-  render() {
-    function tranformData(data) {
-      const transformRow = ([date, value]) => [new Date(date), value]
-      const dataHeader = [
-        { type: 'date', label: 'Day' }, 'Visitors',
-      ]
+const VisitorLineChart = (props) => {
+  const horizontalAxis = { type: 'date', label: 'Day' }
+  const lineLabel = 'Visitors'
+  const plotData = transformData(props.data, horizontalAxis, [lineLabel])
 
-      return [dataHeader, ...data.map(transformRow)]
-    }
-
-    return (
-      <LineChart
-        chartType="LineChart"
-        chartName=""
-        height="300px"
-        data={tranformData(this.props.data)}
-        fetchData={this.props.fetchData}
-        fromDate={this.props.fromDate}
-        toDate={this.props.toDate}
-        options={{
-          title: 'Visitors',
-        }}
-      />
-    )
-  }
+  return (
+    <LineChart
+      chartType="LineChart"
+      chartName=""
+      height="300px"
+      data={plotData}
+      fetchData={props.fetchData}
+      fromDate={props.fromDate}
+      toDate={props.toDate}
+      options={{
+        title: 'Visitors',
+      }}
+    />
+  )
 }
 
 VisitorLineChart.propTypes = {

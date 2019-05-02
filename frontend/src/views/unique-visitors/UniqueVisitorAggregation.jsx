@@ -2,16 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Statistic } from 'semantic-ui-react'
+import { sumRows } from '../helpers/apiDataHelpers'
 
 const UniqueVisitorAggregation = (props) => {
-  const sum = props.data.reduce(
-    (currentSum, row) => {
-      const [_date, value] = row // eslint-disable-line no-unused-vars
-
-      return currentSum + value
-    },
-    0,
-  )
+  const sum = sumRows(props.data)
 
   return (<Statistic label="# Unique Visitors" value={sum} inverted />)
 }
