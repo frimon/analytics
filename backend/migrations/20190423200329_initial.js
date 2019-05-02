@@ -12,10 +12,11 @@ exports.up = async knex => {
   })
 
   await knex.schema.createTable('page_views', table => {
-    table.increments('id').primary()
+    table.uuid('id').primary()
     table.uuid('session_id').notNull()
     table.string('url', 255).notNull()
-    table.timestamp('created_at').defaultTo(knex.fn.now()).notNull()
+    table.timestamp('visited_at').defaultTo(knex.fn.now()).notNull()
+    table.timestamp('left_at').nullable()
   })
 
   await knex.schema.createTable('events', table => {

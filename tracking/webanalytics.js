@@ -1,9 +1,11 @@
 'use strict'
 
 const cookies = require('browser-cookies')
-const uuid = require('uuid/v4')
+const uuid = require('id128').Uuid4
 
 async function webanalytics(url) {
+
+  const pageViewId = uuid.generate().toRaw()
 
   function post(path, data) {
     return fetch(`${url}${path}`, {
@@ -11,13 +13,21 @@ async function webanalytics(url) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
+  }
+
+  function put(path, data) {
+
+    const xmlhttp = new XMLHttpRequest()
+    xmlhttp.open('PUT', `${url}${path}`, false)// the false is for making the call synchronous
+    xmlhttp.setRequestHeader('Content-type', 'application/json')
+    xmlhttp.send(JSON.stringify(data))
   }
 
   async function createSession(sessionId, visitorId) {
 
-    const response = await post('/track/session', {
+    await post('/track/session', {
       sessionId,
       visitorId,
       referer: document.referrer || undefined,
@@ -29,7 +39,7 @@ async function webanalytics(url) {
 
     if (!session) {
       session = {
-        id: uuid(),
+        id: uuid.generate().toRaw(),
       }
 
       await createSession(session.id, getVisitorId())
@@ -48,9 +58,9 @@ async function webanalytics(url) {
     let visitorId = cookies.get('visitorId')
 
     if (!visitorId) {
-      visitorId = uuid()
+      visitorId = uuid.generate().toRaw()
       cookies.set('visitorId', visitorId, {
-        expires: 365 * 5 // 5 years
+        expires: 365 * 5, // 5 years
       })
     }
 
@@ -58,14 +68,21 @@ async function webanalytics(url) {
   }
 
   async function trackPageView() {
-    const response = await post('/track/pageview', {
+
+    await post('/track/pageview', {
+      pageViewId,
       sessionId: await getSessionId(),
       url: window.location.href,
     })
   }
 
+  function updatePageViewLeftTime() {
+    put(`/track/pageview/${pageViewId}`)
+  }
+
   async function trackEvent(name, payload) {
-    const response = await post('/track/event', {
+
+    await post('/track/event', {
       sessionId: await getSessionId(),
       name,
       payload,
@@ -75,6 +92,7 @@ async function webanalytics(url) {
   await trackPageView()
 
   window.webanalytics.trackEvent = trackEvent
+  window.onbeforeunload = () => updatePageViewLeftTime()
 }
 
 window.webanalytics = webanalytics
