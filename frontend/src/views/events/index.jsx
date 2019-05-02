@@ -28,8 +28,6 @@ class EventsDashboard extends Component {
   }
 
   requestEventsData() {
-    console.log(this.props.events)
-
     const eventsDataHttpRequest = Object
       .keys(this.props.events)
       .map(eventName => this.props.fetchData(this.props.fromDate, this.props.toDate, eventName))
@@ -39,12 +37,21 @@ class EventsDashboard extends Component {
 
   render() {
     const eventNames = Object.keys(this.props.events)
-    const eventRows = eventNames.map(eventName => (
-      <Table.Row>
-        <Table.Cell><a>{eventName}</a></Table.Cell>
-        <Table.Cell>{ this.props.events[eventName].reduce((sum, [date, currentValue]) => sum + currentValue, 0)}</Table.Cell>
-      </Table.Row>
-    ))
+    const eventRows = eventNames.map((eventName) => {
+      const totalEventTriggers = this.props.events[eventName].reduce((sum, [date, currentValue]) => sum + currentValue, 0)
+
+      return (
+        <Table.Row key={eventName}>
+          <Table.Cell>
+            <a href={`${this.props.location.pathname}/${eventName}`}>{eventName}</a>
+          </Table.Cell>
+
+          <Table.Cell>
+            {totalEventTriggers}
+          </Table.Cell>
+        </Table.Row>
+      )
+    })
 
     return (
       <Container>
@@ -92,6 +99,7 @@ EventsDashboard.propTypes = {
   fetchEventList: PropTypes.func.isRequired,
   fromDate: PropTypes.string.isRequired,
   toDate: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(applicationState) {
