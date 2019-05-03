@@ -2,20 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Statistic } from 'semantic-ui-react'
+import { sumRows } from '../helpers/apiDataHelpers'
 
 const BounceRateAggregation = (props) => {
-  const [_header, ...dataPoints] = props.data // eslint-disable-line no-unused-vars
+  const sum = sumRows(props.data)
 
-  const sum = dataPoints.reduce(
-    (currentSum, row) => {
-      const [_date, value] = row // eslint-disable-line no-unused-vars
-
-      return currentSum + value
-    },
-    0,
-  )
-
-  const mean = (sum / dataPoints.length)
+  const mean = (sum / props.data.length)
 
   return (<Statistic label="Bounce Rate" value={`${mean.toPrecision(3)}%`} inverted />)
 }

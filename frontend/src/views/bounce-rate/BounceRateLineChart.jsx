@@ -3,24 +3,20 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import LineChart from '../charts/LineChart'
+import { transformData } from '../helpers/googleChartHelpers'
 import { fetchData } from './actions'
 
 const BounceRateLineChart = (props) => {
-  function tranformData(data) {
-    const transformRow = ([date, value]) => [new Date(date), value]
-    const dataHeader = [
-      { type: 'date', label: 'Day' }, 'Bounce Rate',
-    ]
-
-    return [dataHeader, ...data.map(transformRow)]
-  }
+  const horizontalAxis = { type: 'date', label: 'Day' }
+  const lineLabel = 'Bounce Rate'
+  const plotData = transformData(props.data, horizontalAxis, [lineLabel])
 
   return (
     <LineChart
       chartType="LineChart"
       chartName=""
       height="300px"
-      data={tranformData(props.data)}
+      data={plotData}
       fetchData={props.fetchData}
       fromDate={props.fromDate}
       toDate={props.toDate}
