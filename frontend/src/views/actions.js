@@ -23,6 +23,20 @@ export function loadConfig(setIsLoading) {
 }
 */
 
+export function setFromDate(fromDate) {
+  return {
+    type: buildType('setFromDate'),
+    fromDate,
+  }
+}
+
+export function setToDate(toDate) {
+  return {
+    type: buildType('setToDate'),
+    toDate,
+  }
+}
+
 export function setConfig(config) {
   return {
     type: buildType('setConfig'),

@@ -1,7 +1,11 @@
 import Immutable from 'immutable'
+import moment from 'moment'
 
 const actionPrefix = '@@GLOBAL'
-const initialState = Immutable.fromJS({})
+const initialState = Immutable.fromJS({
+  fromDate: moment().format('YYYY-MM-DD'),
+  toDate: moment().add(30, 'days').format('YYYY-MM-DD'),
+})
 
 export default (state = initialState, action) => {
   if (!action.type.startsWith(actionPrefix)) {
@@ -19,6 +23,14 @@ export default (state = initialState, action) => {
 
     case 'setError': {
       return state.set('errorMessage', action.errorMessage)
+    }
+
+    case 'setFromDate': {
+      return state.set('fromDate', action.fromDate)
+    }
+
+    case 'setToDate': {
+      return state.set('toDate', action.toDate)
     }
 
     default:
