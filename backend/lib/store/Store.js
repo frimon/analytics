@@ -1,6 +1,7 @@
 'use strict'
 
 const ipInt = require('ip-to-int')
+const moment = require('moment')
 
 class Store {
 
@@ -54,7 +55,7 @@ class Store {
     const query = this._queryStatistics(this.db('sessions'), unit, 'created_at', selectCount)
     this._queryBetweenDates(query, 'created_at', from, to)
 
-    return query
+    return statistics(query)
   }
 
   async getVisitorCount(from, to, unique = false) {
@@ -71,7 +72,7 @@ class Store {
     const query = this._queryStatistics(this.db('page_views'), unit, 'visited_at', '*')
     this._queryBetweenDates(query, 'visited_at', from, to)
 
-    return query
+    return statistics(query)
   }
 
   async getPageViewCount(from, to) {
@@ -104,6 +105,16 @@ class Store {
 
     return query
   }
+}
+
+async function statistics(query) {
+
+  const response = await query
+
+  return new Map(response.map(row => [
+    row.date.valueOf(),
+    row.count,
+  ]))
 }
 
 async function count(query) {

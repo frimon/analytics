@@ -13,7 +13,7 @@ function createApiRouter({ store }) {
     const unique = 'unique' in ctx.request.query
     const data = await store.getVisitorStatistics(from, to, unit, unique)
 
-    ctx.body = transformStatistics(data, unit)
+    ctx.body = transformStatistics(data, from, to, unit)
   })
 
   router.get('/statistics/page-views', async ctx => {
@@ -21,7 +21,7 @@ function createApiRouter({ store }) {
     const { from, to, unit } = ctx.request.query
     const data = await store.getPageViewStatistics(from, to, unit)
 
-    ctx.body = transformStatistics(data, unit)
+    ctx.body = transformStatistics(data, from, to, unit)
   })
 
   router.get('/count/visitors', async ctx => {
