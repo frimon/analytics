@@ -22,7 +22,7 @@ function transformStatistics(data, from, to, unit) {
     current = addUnit(current, unit)
   }
 
-  return formattedData
+  return { data: formattedData }
 }
 
 function dateFormat(unit) {
