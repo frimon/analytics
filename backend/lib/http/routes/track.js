@@ -11,7 +11,8 @@ function createTrackRouter({ store }) {
     const { sessionId, visitorId, referer } = ctx.request.body
     const ip = validateIp(ctx.request.ip) ? ctx.request.ip : '127.0.0.1'
 
-    await store.repositories.session.create(sessionId, {
+    await store.createSession({
+      sessionId,
       visitorId,
       referer,
       ip,
@@ -25,8 +26,8 @@ function createTrackRouter({ store }) {
 
     const { pageViewId, sessionId, url } = ctx.request.body
 
-    await store.repositories.pageview.create({
-      id: pageViewId,
+    await store.createPageView({
+      pageViewId,
       sessionId,
       url,
     })
@@ -36,7 +37,7 @@ function createTrackRouter({ store }) {
 
   router.put('/pageview/:id', async ctx => {
 
-    await store.repositories.pageview.leftPage(ctx.params.id)
+    await store.updatePageView(ctx.params.id, { left_at: new Date() })
     ctx.body = { ok: true }
   })
 
@@ -44,7 +45,7 @@ function createTrackRouter({ store }) {
 
     const { sessionId, name, payload } = ctx.request.body
 
-    await store.repositories.event.create({
+    await store.createEvent({
       sessionId,
       name,
       payload,

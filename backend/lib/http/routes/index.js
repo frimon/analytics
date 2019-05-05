@@ -6,8 +6,8 @@ const { createApiRouter } = require('./api')
 const { createTrackRouter } = require('./track')
 
 function createRouter(store) {
-  const router = new KoaRouter()
 
+  const router = new KoaRouter()
   const apiRouter = createApiRouter(store)
   const trackRouter = createTrackRouter(store)
 

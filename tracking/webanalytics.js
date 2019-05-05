@@ -35,16 +35,19 @@ async function webanalytics(url) {
   }
 
   async function getSessionId() {
-    let session = cookies.get('session')
 
-    if (!session) {
+    let session = cookies.get('session')
+    if (session) {
+      session = JSON.parse(session)
+    }
+
+    if (!session || sessionHasExpired(session)) {
+
       session = {
         id: uuid.generate().toRaw(),
       }
 
       await createSession(session.id, getVisitorId())
-    } else {
-      session = JSON.parse(session)
     }
 
     session.fetchedAt = new Date().valueOf()
@@ -52,6 +55,15 @@ async function webanalytics(url) {
     cookies.set('session', JSON.stringify(session))
 
     return session.id
+  }
+
+  function sessionHasExpired(session) {
+
+    const ttl = 30 * 60 * 1000 // 30 minutes
+    const expireTime = session.fetchedAt + ttl
+    const currentTime = (new Date()).valueOf()
+
+    return expireTime < currentTime
   }
 
   function getVisitorId() {
