@@ -3,9 +3,7 @@
 function transformCount(data) {
 
   return {
-    data: {
-      count: parseInt(data, 10),
-    },
+    data: parseInt(data, 10),
   }
 }
 
