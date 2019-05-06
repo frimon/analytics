@@ -11,25 +11,29 @@ export function setData(data) {
   }
 }
 
+export function setCount(count) {
+  return {
+    type: buildType('setCount'),
+    count,
+  }
+}
+
 export function fetchData(from, to) {
   return async (dispatch) => {
-    const data = [
-      ['2019-01-01', 5],
-      ['2019-01-02', 2],
-      ['2019-01-03', 8],
-      ['2019-01-04', 16],
-      ['2019-01-05', 3],
-      ['2019-01-06', 2],
-      ['2019-01-07', 8],
-      ['2019-01-08', 12],
-      ['2019-01-09', 8],
-      ['2019-01-10', 12],
-      ['2019-01-11', 13],
-      ['2019-01-12', 5],
-      ['2019-01-13', 1],
-      ['2019-01-14', 17],
-    ] // await fetch(`/api/statistics/visitors?unique=true&from=2019-01-01%2000%3A00%3A00&to=2019-01-31%2023%3A59%3A59&unit=day&format=graph`)
+    const response = await fetch(`/api/statistics/visitors?unique=false&from=${from}&to=${to}&unit=day&format=graph`)
 
-    dispatch(setData(data))
+    const json = await response.json()
+
+    dispatch(setData(json.data))
+  }
+}
+
+export function fetchCount(from, to) {
+  return async (dispatch) => {
+    const response = await fetch(`/api/count/visitors?unique=false&from=${from}&to=${to}&unit=day&format=graph`)
+
+    const json = await response.json()
+
+    dispatch(setCount(json.data))
   }
 }

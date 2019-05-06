@@ -1,25 +1,48 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Statistic } from 'semantic-ui-react'
-import { sumRows } from '../helpers/apiDataHelpers'
+import { fetchCount } from './actions'
 
-const UniqueVisitorAggregation = (props) => {
-  const sum = sumRows(props.data)
+class UniqueVisitorAggregation extends Component {
+  async componentDidMount() {
+    await this.props.fetchCount(this.props.fromDate, this.props.toDate)
+  }
 
-  return (<Statistic label="# Unique Visitors" value={sum} inverted />)
-}
+  async componentDidUpdate(prevProps) {
+    if (prevProps.fromDate !== this.props.fromDate || prevProps.toDate !== this.props.toDate) {
+      await this.props.fetchCount(this.props.fromDate, this.props.toDate)
+    }
+  }
 
-UniqueVisitorAggregation.propTypes = {
-  data: PropTypes.array.isRequired,
-}
-
-function mapStateToProps(applicationState) {
-  const uniqueVisitorState = applicationState.uniqueVisitors
-
-  return {
-    data: uniqueVisitorState.get('data').toJS(),
+  render() {
+    return (<Statistic label="# Unique Visitors" value={this.props.count} inverted />)
   }
 }
 
-export default connect(mapStateToProps)(UniqueVisitorAggregation)
+UniqueVisitorAggregation.propTypes = {
+  count: PropTypes.number.isRequired,
+  fetchCount: PropTypes.func.isRequired,
+  fromDate: PropTypes.string.isRequired,
+  toDate: PropTypes.string.isRequired,
+}
+
+function mapStateToProps(applicationState) {
+  const globalState = applicationState.global
+  const uniqueVisitorState = applicationState.uniqueVisitors
+
+  return {
+    count: uniqueVisitorState.get('count'),
+    fromDate: globalState.get('fromDate'),
+    toDate: globalState.get('toDate'),
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    fetchCount,
+  }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UniqueVisitorAggregation)

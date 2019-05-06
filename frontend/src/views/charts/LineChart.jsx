@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import Chart from './Chart'
 
 class LineChart extends Component {
-  componentDidMount() {
-    this.props.fetchData(this.props.fromDate, this.props.toDate)
+  async componentDidMount() {
+    await this.props.fetchData(this.props.fromDate, this.props.toDate)
   }
 
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     if (prevProps.fromDate !== this.props.fromDate || prevProps.toDate !== this.props.toDate) {
-      this.props.fetchData(this.props.fromDate, this.props.toDate)
+      await this.props.fetchData(this.props.fromDate, this.props.toDate)
     }
   }
 
