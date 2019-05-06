@@ -1,7 +1,6 @@
 'use strict'
 
 const ipInt = require('ip-to-int')
-const moment = require('moment')
 
 class Store {
 
@@ -83,12 +82,26 @@ class Store {
     return count(query)
   }
 
+  async getSessionLengthStatistics(from, to, unit) {
+
+    const query = this.db('session_lengths')
+      .select([
+        this.db.raw(`date_trunc('${unit}', created_at) as date`),
+        this.db.raw('avg(length) as number'),
+      ])
+      .groupBy(this.db.raw(`date_trunc('${unit}', created_at)`))
+
+    this._queryBetweenDates(query, 'created_at', from, to)
+
+    return statistics(query)
+  }
+
   _queryStatistics(query, unit, dateField, countField) {
 
     return query
       .select([
         this.db.raw(`date_trunc('${unit}', ${dateField}) as date`),
-        this.db.raw(`count(${countField}) as count`),
+        this.db.raw(`count(${countField}) as number`),
       ])
       .groupBy(this.db.raw(`date_trunc('${unit}', ${dateField})`))
   }
@@ -113,7 +126,7 @@ async function statistics(query) {
 
   return new Map(response.map(row => [
     row.date.valueOf(),
-    row.count,
+    row.number,
   ]))
 }
 

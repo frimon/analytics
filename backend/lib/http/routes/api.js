@@ -24,6 +24,14 @@ function createApiRouter({ store }) {
     ctx.body = transformStatistics(data, from, to, unit)
   })
 
+  router.get('/statistics/session-length', async ctx => {
+
+    const { from, to, unit } = ctx.request.query
+    const data = await store.getSessionLengthStatistics(from, to, unit)
+
+    ctx.body = transformStatistics(data, from, to, unit)
+  })
+
   router.get('/count/visitors', async ctx => {
 
     const { from, to } = ctx.request.query
