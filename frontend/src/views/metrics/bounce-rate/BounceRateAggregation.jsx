@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Statistic } from 'semantic-ui-react'
+import { Statistic, Popup } from 'semantic-ui-react'
 import { sumRows } from '../../helpers/apiDataHelpers'
 
 const BounceRateAggregation = (props) => {
@@ -9,7 +9,12 @@ const BounceRateAggregation = (props) => {
 
   const mean = (sum / props.data.length)
 
-  return (<Statistic label="Bounce Rate" value={`${mean.toPrecision(3)}%`} inverted />)
+  return (
+    <Popup
+      content="Bounce rate is the percentage of visitors to a particular website who navigate away from the site after viewing only one page. A high bounce rate can occur if your users find your content non-satisfactory."
+      trigger={<Statistic label="Bounce Rate" value={`${mean.toPrecision(3)}%`} inverted />}
+    />
+  )
 }
 
 BounceRateAggregation.propTypes = {

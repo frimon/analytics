@@ -1,15 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Statistic } from 'semantic-ui-react'
+import { Statistic, Popup } from 'semantic-ui-react'
 import { sumRows } from '../../helpers/apiDataHelpers'
+
 
 const AverageSessionAggregation = (props) => {
   const sum = sumRows(props.data)
 
   const mean = (sum / props.data.length)
 
-  return (<Statistic label="Avg. Session Length (seconds)" value={`${mean.toPrecision(3)}`} inverted />)
+  return (
+    <Popup
+      content="A session is defined as a group of interactions one user takes within a given time frame on your website. This metric tells you how long a session is on an average."
+      trigger={<Statistic label="Avg. session length (seconds)" value={`${mean.toPrecision(3)}`} inverted />}
+    />
+  )
 }
 
 AverageSessionAggregation.propTypes = {

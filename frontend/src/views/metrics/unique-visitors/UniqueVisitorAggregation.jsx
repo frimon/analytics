@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Statistic } from 'semantic-ui-react'
+import { Statistic, Popup } from 'semantic-ui-react'
 import { fetchCount } from './actions'
 
 class UniqueVisitorAggregation extends Component {
@@ -17,7 +17,12 @@ class UniqueVisitorAggregation extends Component {
   }
 
   render() {
-    return (<Statistic label="# Unique Visitors" value={this.props.count} inverted />)
+    return (
+      <Popup
+        content="A unique visitor is someone visiting the site from a certain device and may have several visits."
+        trigger={<Statistic label="# Unique Visitors" value={this.props.count} inverted />}
+      />
+    )
   }
 }
 

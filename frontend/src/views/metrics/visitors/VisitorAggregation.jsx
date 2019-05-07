@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Statistic } from 'semantic-ui-react'
+import { Statistic, Popup } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { fetchCount } from './actions'
 
@@ -17,7 +17,12 @@ class VisitorAggregation extends Component {
   }
 
   render() {
-    return (<Statistic label="# Visitors" value={this.props.count} inverted />)
+    return (
+      <Popup
+        content="A visitor is someone interacting with the website under a given time period."
+        trigger={<Statistic label="# Visitors" value={this.props.count} inverted />}
+      />
+    )
   }
 }
 

@@ -86,7 +86,7 @@ class Introduction extends Component {
               <Icon name="question" />
               )
               {' '}
-              if you want more information about a specific functionality.
+              or hover over the component if you want more information.
             </p>
           </Modal.Description>
         </Modal.Content>
