@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import LineChart from '../charts/LineChart'
-import { transformData } from '../helpers/googleChartHelpers'
+import LineChart from '../../charts/LineChart'
+import { transformData } from '../../helpers/googleChartHelpers'
 import { fetchData } from './actions'
 
 const BounceRateLineChart = (props) => {

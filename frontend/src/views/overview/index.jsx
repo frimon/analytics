@@ -1,17 +1,16 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { Container, Grid } from 'semantic-ui-react'
-import VisitorLineChart from '../visitors/VisitorLineChart'
-import VisitorAggregation from '../visitors/VisitorAggregation'
-import UniqueVisitorLineChart from '../unique-visitors/UniqueVisitorLineChart'
-import UniqueVisitorAggregation from '../unique-visitors/UniqueVisitorAggregation'
-import PageViewsLineChart from '../page-views/PageViewsLineChart'
-import PageViewsAggregation from '../page-views/PageViewsAggregation'
-import AverageSessionLengthLineChart from '../average-session-length/AverageSessionLengthLineChart'
-import AverageSessionLengthAggregation from '../average-session-length/AverageSessionLengthAggregation'
-import BounceRateLineChart from '../bounce-rate/BounceRateLineChart'
-import BounceRateAggregation from '../bounce-rate/BounceRateAggregation'
-
+import VisitorLineChart from '../metrics/visitors/VisitorLineChart'
+import VisitorAggregation from '../metrics/visitors/VisitorAggregation'
+import UniqueVisitorLineChart from '../metrics/unique-visitors/UniqueVisitorLineChart'
+import UniqueVisitorAggregation from '../metrics/unique-visitors/UniqueVisitorAggregation'
+import PageViewsLineChart from '../metrics/page-views/PageViewsLineChart'
+import PageViewsAggregation from '../metrics/page-views/PageViewsAggregation'
+import AverageSessionLengthLineChart from '../metrics/average-session-length/AverageSessionLengthLineChart'
+import AverageSessionLengthAggregation from '../metrics/average-session-length/AverageSessionLengthAggregation'
+import BounceRateLineChart from '../metrics/bounce-rate/BounceRateLineChart'
+import BounceRateAggregation from '../metrics/bounce-rate/BounceRateAggregation'
 
 const Overview = () => (
   <Container>

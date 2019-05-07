@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Statistic } from 'semantic-ui-react'
-import { sumRows } from '../helpers/apiDataHelpers'
+import { sumRows } from '../../helpers/apiDataHelpers'
 
 const PageViewsAggregation = (props) => {
   const sum = sumRows(props.data)
