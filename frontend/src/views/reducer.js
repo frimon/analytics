@@ -3,8 +3,8 @@ import moment from 'moment'
 
 const actionPrefix = '@@GLOBAL'
 const initialState = Immutable.fromJS({
-  fromDate: moment().format('YYYY-MM-DD'),
-  toDate: moment().add(30, 'days').format('YYYY-MM-DD'),
+  fromDate: moment().subtract(7, 'days').format('YYYY-MM-DD'),
+  toDate: moment().add(1, 'days').format('YYYY-MM-DD'),
 })
 
 export default (state = initialState, action) => {

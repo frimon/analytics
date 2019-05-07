@@ -20,7 +20,7 @@ export function setCount(count) {
 
 export function fetchData(from, to) {
   return async (dispatch) => {
-    const response = await fetch(`/api/statistics/visitors?unique=false&from=${from}&to=${to}&unit=day&format=graph`)
+    const response = await fetch(`/api/statistics/visitors?from=${from}&to=${to}&unit=day`)
 
     const json = await response.json()
 
@@ -30,7 +30,7 @@ export function fetchData(from, to) {
 
 export function fetchCount(from, to) {
   return async (dispatch) => {
-    const response = await fetch(`/api/count/visitors?unique=false&from=${from}&to=${to}&unit=day&format=graph`)
+    const response = await fetch(`/api/count/visitors?from=${from}&to=${to}&unit=day`)
 
     const json = await response.json()
 

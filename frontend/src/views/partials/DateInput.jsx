@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Input } from 'semantic-ui-react'
 
-class DateInput extends React.Component {
+class DateInput extends Component {
   constructor(props) {
     super(props)
     this.setDate = this.setDate.bind(this)
