@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
+import { NavLink } from 'react-router-dom'
 import {
   Container, Table, Menu, Icon,
 } from 'semantic-ui-react'
@@ -38,12 +39,14 @@ class EventsDashboard extends Component {
   render() {
     const eventNames = Object.keys(this.props.events)
     const eventRows = eventNames.map((eventName) => {
-      const totalEventTriggers = this.props.events[eventName].reduce((sum, [date, currentValue]) => sum + currentValue, 0)
+      const totalEventTriggers = this.props.events[eventName]
+        // eslint-disable-next-line no-unused-vars
+        .reduce((sum, [date, currentValue]) => sum + currentValue, 0)
 
       return (
         <Table.Row key={eventName}>
           <Table.Cell>
-            <a href={`${this.props.location.pathname}/${eventName}`}>{eventName}</a>
+            <NavLink to={`${this.props.location.pathname}/${eventName}`}>{eventName}</NavLink>
           </Table.Cell>
 
           <Table.Cell>

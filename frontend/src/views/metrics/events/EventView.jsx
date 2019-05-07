@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
+import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -25,7 +26,7 @@ class EventView extends Component {
 
         <Breadcrumb>
           <Breadcrumb.Section>
-            <a href="/events">Events</a>
+            <NavLink to="/events">Events</NavLink>
           </Breadcrumb.Section>
 
           <Breadcrumb.Divider icon="right angle" />
