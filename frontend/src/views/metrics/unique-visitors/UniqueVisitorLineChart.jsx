@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import LineChart from '../charts/LineChart'
+import LineChart from '../../charts/LineChart'
 import { fetchData } from './actions'
-import { transformData } from '../helpers/googleChartHelpers'
+import { transformData } from '../../helpers/googleChartHelpers'
 
 const UniqueVisitorLineChart = (props) => {
   const horizontalAxis = { type: 'date', label: 'Day' }
