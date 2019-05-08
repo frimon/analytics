@@ -1,20 +1,49 @@
 import React from 'react'
 import {
-  Menu, Modal, Grid, Divider, Icon,
+  Menu, Modal, Grid, Divider, Icon, Dropdown,
 } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import moment from 'moment'
 import DateInput from './DateInput'
 import { setFromDate, setToDate } from '../actions'
 
 const DateModal = (props) => {
+  const setLastDayInterval = () => {
+    const fromDate = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+    const toDate = moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
+
+    props.setFromDate(fromDate)
+    props.setToDate(toDate)
+  }
+
+  const setLastWeekInterval = () => {
+    const fromDate = moment().subtract(1, 'week').startOf('day').format('YYYY-MM-DD HH:mm:ss')
+    const toDate = moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
+
+    props.setFromDate(fromDate)
+    props.setToDate(toDate)
+  }
+
+  const setLastMonthInterval = () => {
+    const fromDate = moment().subtract(1, 'month').startOf('day').format('YYYY-MM-DD HH:mm:ss')
+    const toDate = moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
+
+    props.setFromDate(fromDate)
+    props.setToDate(toDate)
+  }
+
+  const fromDateFormatted = moment(props.fromDate).format('YYYY-MM-DD')
+  const toDateFormatted = moment(props.toDate).format('YYYY-MM-DD')
+
   const modalTrigger = (
     <Menu.Item link position="right">
-      {`${props.fromDate} to ${props.toDate}`}
+      {`${fromDateFormatted} to ${toDateFormatted}`}
       <Icon name="calendar alternate outline" />
     </Menu.Item>
   )
+
 
   return (
     <Modal trigger={modalTrigger}>
@@ -31,7 +60,7 @@ const DateModal = (props) => {
           <Grid.Column width={6}>
             <DateInput
               label="From"
-              date={props.fromDate}
+              date={fromDateFormatted}
               setDate={props.setFromDate}
             />
           </Grid.Column>
@@ -39,9 +68,20 @@ const DateModal = (props) => {
           <Grid.Column width={6}>
             <DateInput
               label="To"
-              date={props.toDate}
+              date={toDateFormatted}
               setDate={props.setToDate}
             />
+          </Grid.Column>
+
+          <Grid.Column width={12} textAlign="center">
+            <Dropdown text="Select a pre-defined interval">
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={setLastDayInterval} text="Last day" />
+                <Dropdown.Item onClick={setLastWeekInterval} text="Last week" />
+                <Dropdown.Item onClick={setLastMonthInterval} text="Last month" />
+              </Dropdown.Menu>
+            </Dropdown>
+
           </Grid.Column>
         </Grid>
       </Modal.Content>

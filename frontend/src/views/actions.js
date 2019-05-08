@@ -1,4 +1,4 @@
-// import { parseResponse } from './utils/parseResponse'
+import moment from 'moment'
 
 const actionPrefix = '@@GLOBAL'
 
@@ -6,34 +6,17 @@ function buildType(subType) {
   return `${actionPrefix}/${subType}`
 }
 
-/*
-export function loadConfig(setIsLoading) {
-  return async (dispatch) => {
-    if (setIsLoading) {
-      dispatch(setLoadingState(true))
-    }
-
-    const { data: config } = await parseResponse(await fetch('/api/config'))
-    dispatch(setConfig(config))
-
-    if (setIsLoading) {
-      dispatch(setLoadingState(false))
-    }
-  }
-}
-*/
-
 export function setFromDate(fromDate) {
   return {
     type: buildType('setFromDate'),
-    fromDate,
+    fromDate: moment(fromDate).startOf('day').format('YYYY-MM-DD HH:mm:ss'),
   }
 }
 
 export function setToDate(toDate) {
   return {
     type: buildType('setToDate'),
-    toDate,
+    toDate: moment(toDate).endOf('day').format('YYYY-MM-DD HH:mm:ss'),
   }
 }
 
