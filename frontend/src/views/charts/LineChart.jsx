@@ -1,41 +1,39 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { Placeholder } from 'semantic-ui-react'
 import Chart from './Chart'
 
-class LineChart extends Component {
-  async componentDidMount() {
-    await this.props.fetchData(this.props.fromDate, this.props.toDate, this.props.unit)
-  }
-
-  async componentDidUpdate(prevProps) {
-    if (prevProps.fromDate !== this.props.fromDate
-      || prevProps.toDate !== this.props.toDate
-      || prevProps.unit !== this.props.unit
-    ) {
-      await this.props.fetchData(this.props.fromDate, this.props.toDate, this.props.unit)
-    }
-  }
-
-  render() {
+const ChartComponent = (props) => {
+  if (props.data.length === 0) {
     return (
-      <Chart
-        height={this.props.height}
-        chartType="LineChart"
-        options={this.props.options}
-        data={this.props.data}
-      />
+      <Placeholder fluid>
+        <Placeholder.Header image>
+          <Placeholder.Line />
+          <Placeholder.Line />
+        </Placeholder.Header>
+        <Placeholder.Paragraph>
+          <Placeholder.Line />
+          <Placeholder.Line />
+          <Placeholder.Line />
+        </Placeholder.Paragraph>
+      </Placeholder>
     )
   }
+
+  return (
+    <Chart
+      chartType="LineChart"
+      data={props.data}
+      height={props.height}
+      options={props.options}
+    />
+  )
 }
 
-LineChart.propTypes = {
+ChartComponent.propTypes = {
   data: PropTypes.array.isRequired,
-  unit: PropTypes.string.isRequired,
-  fetchData: PropTypes.func.isRequired,
-  fromDate: PropTypes.string.isRequired,
-  toDate: PropTypes.string.isRequired,
   height: PropTypes.string.isRequired,
   options: PropTypes.object.isRequired,
 }
 
-export default LineChart
+export default ChartComponent

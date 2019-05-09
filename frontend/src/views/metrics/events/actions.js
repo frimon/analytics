@@ -35,7 +35,6 @@ export function fetchEventList() {
   }
 }
 
-
 export function fetchData(from, to, unit, eventName) {
   return async (dispatch) => {
     const data = [

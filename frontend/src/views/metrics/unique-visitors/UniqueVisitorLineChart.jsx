@@ -1,40 +1,37 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import LineChart from '../../charts/LineChart'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { fetchData } from './actions'
 import { transformData } from '../../helpers/googleChartHelpers'
+import MetricChart from '../../charts/MetricChart'
+import LineChart from '../../charts/LineChart'
 
-const UniqueVisitorLineChart = (props) => {
-  const axisType = props.unit === 'hour' ? 'datetime' : 'date'
-  const horizontalAxis = { type: axisType, label: 'Day' }
-  const lineLabel = 'Unique Visitors'
-  const plotData = transformData(props.data, horizontalAxis, [lineLabel])
+class UniqueVisitorChart extends MetricChart {
+  render() {
+    const axisType = this.props.unit === 'hour' ? 'datetime' : 'date'
+    const horizontalAxis = { type: axisType, label: 'Day' }
+    const lineLabel = 'Unique Visitors'
+    const plotData = transformData(this.props.data, horizontalAxis, [lineLabel])
 
-  return (
-    <LineChart
-      chartType="LineChart"
-      chartName=""
-      height="300px"
-      data={plotData}
-      unit={props.unit}
-      fetchData={props.fetchData}
-      fromDate={props.fromDate}
-      toDate={props.toDate}
-      options={{
-        title: 'Unique Visitors',
-      }}
-    />
-  )
+    return (
+      <LineChart
+        data={plotData}
+        height="300px"
+        options={{
+          title: 'Unique Visitors',
+        }}
+      />
+    )
+  }
 }
 
-UniqueVisitorLineChart.propTypes = {
-  data: PropTypes.array.isRequired,
-  unit: PropTypes.string.isRequired,
-  fetchData: PropTypes.func.isRequired,
+UniqueVisitorChart.propTypes = {
   fromDate: PropTypes.string.isRequired,
   toDate: PropTypes.string.isRequired,
+  unit: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired,
+  fetchData: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(applicationState) {
@@ -55,4 +52,5 @@ function mapDispatchToProps(dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UniqueVisitorLineChart)
+
+export default connect(mapStateToProps, mapDispatchToProps)(UniqueVisitorChart)
