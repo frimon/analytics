@@ -11,7 +11,8 @@ const EventLineChart = (props) => {
     return (<h1>Loading</h1>)
   }
 
-  const horizontalAxis = { type: 'date', label: 'Day' }
+  const axisType = props.unit === 'hour' ? 'datetime' : 'date'
+  const horizontalAxis = { type: axisType, label: 'Day' }
   const lineLabel = 'Events'
   const plotData = transformData(props.events[props.eventName], horizontalAxis, [lineLabel])
 
@@ -21,6 +22,7 @@ const EventLineChart = (props) => {
       chartName=""
       height="300px"
       data={plotData}
+      unit={props.unit}
       fetchData={props.fetchData}
       fromDate={props.fromDate}
       toDate={props.toDate}
@@ -34,6 +36,7 @@ const EventLineChart = (props) => {
 EventLineChart.propTypes = {
   events: PropTypes.object.isRequired,
   eventName: PropTypes.string.isRequired,
+  unit: PropTypes.string.isRequired,
   fetchData: PropTypes.func.isRequired,
   fromDate: PropTypes.string.isRequired,
   toDate: PropTypes.string.isRequired,
@@ -45,6 +48,7 @@ function mapStateToProps(applicationState) {
 
   return {
     events: eventsState.toJS(),
+    unit: globalState.get('unit'),
     fromDate: globalState.get('fromDate'),
     toDate: globalState.get('toDate'),
   }

@@ -11,7 +11,7 @@ export function setData(data) {
   }
 }
 
-export function fetchData(from, to) {
+export function fetchData(from, to, unit) {
   return async (dispatch) => {
     const data = [
       ['2019-01-01', 50],

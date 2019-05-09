@@ -36,7 +36,7 @@ export function fetchEventList() {
 }
 
 
-export function fetchData(from, to, eventName) {
+export function fetchData(from, to, unit, eventName) {
   return async (dispatch) => {
     const data = [
       ['2019-01-01', Math.floor(Math.random() * 20)],

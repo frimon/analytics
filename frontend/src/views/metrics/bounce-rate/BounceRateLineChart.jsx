@@ -7,7 +7,8 @@ import { transformData } from '../../helpers/googleChartHelpers'
 import { fetchData } from './actions'
 
 const BounceRateLineChart = (props) => {
-  const horizontalAxis = { type: 'date', label: 'Day' }
+  const axisType = props.unit === 'hour' ? 'datetime' : 'date'
+  const horizontalAxis = { type: axisType, label: 'Day' }
   const lineLabel = 'Bounce Rate'
   const plotData = transformData(props.data, horizontalAxis, [lineLabel])
 
@@ -17,6 +18,7 @@ const BounceRateLineChart = (props) => {
       chartName=""
       height="300px"
       data={plotData}
+      unit={props.unit}
       fetchData={props.fetchData}
       fromDate={props.fromDate}
       toDate={props.toDate}
@@ -29,6 +31,7 @@ const BounceRateLineChart = (props) => {
 
 BounceRateLineChart.propTypes = {
   data: PropTypes.array.isRequired,
+  unit: PropTypes.string.isRequired,
   fetchData: PropTypes.func.isRequired,
   fromDate: PropTypes.string.isRequired,
   toDate: PropTypes.string.isRequired,
@@ -40,6 +43,7 @@ function mapStateToProps(applicationState) {
 
   return {
     data: bounceRateState.get('data').toJS(),
+    unit: globalState.get('unit'),
     fromDate: globalState.get('fromDate'),
     toDate: globalState.get('toDate'),
   }

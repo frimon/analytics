@@ -7,7 +7,8 @@ import { fetchData } from './actions'
 import { transformData } from '../../helpers/googleChartHelpers'
 
 const VisitorLineChart = (props) => {
-  const horizontalAxis = { type: 'date', label: 'Day' }
+  const axisType = props.unit === 'hour' ? 'datetime' : 'date'
+  const horizontalAxis = { type: axisType, label: 'Day' }
   const lineLabel = 'Visitors'
   const plotData = transformData(props.data, horizontalAxis, [lineLabel])
 
@@ -18,6 +19,7 @@ const VisitorLineChart = (props) => {
       height="300px"
       data={plotData}
       fetchData={props.fetchData}
+      unit={props.unit}
       fromDate={props.fromDate}
       toDate={props.toDate}
       options={{
@@ -29,6 +31,7 @@ const VisitorLineChart = (props) => {
 
 VisitorLineChart.propTypes = {
   data: PropTypes.array.isRequired,
+  unit: PropTypes.string.isRequired,
   fetchData: PropTypes.func.isRequired,
   fromDate: PropTypes.string.isRequired,
   toDate: PropTypes.string.isRequired,
@@ -40,6 +43,7 @@ function mapStateToProps(applicationState) {
 
   return {
     data: visitorState.get('data').toJS(),
+    unit: globalState.get('unit'),
     fromDate: globalState.get('fromDate'),
     toDate: globalState.get('toDate'),
   }

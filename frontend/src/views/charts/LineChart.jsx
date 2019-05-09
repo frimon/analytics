@@ -4,12 +4,15 @@ import Chart from './Chart'
 
 class LineChart extends Component {
   async componentDidMount() {
-    await this.props.fetchData(this.props.fromDate, this.props.toDate)
+    await this.props.fetchData(this.props.fromDate, this.props.toDate, this.props.unit)
   }
 
   async componentDidUpdate(prevProps) {
-    if (prevProps.fromDate !== this.props.fromDate || prevProps.toDate !== this.props.toDate) {
-      await this.props.fetchData(this.props.fromDate, this.props.toDate)
+    if (prevProps.fromDate !== this.props.fromDate
+      || prevProps.toDate !== this.props.toDate
+      || prevProps.unit !== this.props.unit
+    ) {
+      await this.props.fetchData(this.props.fromDate, this.props.toDate, this.props.unit)
     }
   }
 
@@ -27,6 +30,7 @@ class LineChart extends Component {
 
 LineChart.propTypes = {
   data: PropTypes.array.isRequired,
+  unit: PropTypes.string.isRequired,
   fetchData: PropTypes.func.isRequired,
   fromDate: PropTypes.string.isRequired,
   toDate: PropTypes.string.isRequired,

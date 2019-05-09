@@ -7,7 +7,8 @@ import { fetchData } from './actions'
 import { transformData } from '../../helpers/googleChartHelpers'
 
 const PageViewsLineChart = (props) => {
-  const horizontalAxis = { type: 'date', label: 'Day' }
+  const axisType = props.unit === 'hour' ? 'datetime' : 'date'
+  const horizontalAxis = { type: axisType, label: 'Day' }
   const lineLabel = 'Page Views'
   const plotData = transformData(props.data, horizontalAxis, [lineLabel])
 
@@ -17,6 +18,7 @@ const PageViewsLineChart = (props) => {
       chartName=""
       height="300px"
       data={plotData}
+      unit={props.unit}
       fetchData={props.fetchData}
       fromDate={props.fromDate}
       toDate={props.toDate}
@@ -29,6 +31,7 @@ const PageViewsLineChart = (props) => {
 
 PageViewsLineChart.propTypes = {
   data: PropTypes.array.isRequired,
+  unit: PropTypes.string.isRequired,
   fetchData: PropTypes.func.isRequired,
   fromDate: PropTypes.string.isRequired,
   toDate: PropTypes.string.isRequired,
@@ -40,6 +43,7 @@ function mapStateToProps(applicationState) {
 
   return {
     data: pageViewState.get('data').toJS(),
+    unit: globalState.get('unit'),
     fromDate: globalState.get('fromDate'),
     toDate: globalState.get('toDate'),
   }

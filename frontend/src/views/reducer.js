@@ -5,6 +5,7 @@ const actionPrefix = '@@GLOBAL'
 const initialState = Immutable.fromJS({
   fromDate: moment().subtract(7, 'days').startOf('day').format('YYYY-MM-DD HH:mm:ss'),
   toDate: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'),
+  unit: 'day',
 })
 
 export default (state = initialState, action) => {
@@ -31,6 +32,10 @@ export default (state = initialState, action) => {
 
     case 'setToDate': {
       return state.set('toDate', action.toDate)
+    }
+
+    case 'setUnit': {
+      return state.set('unit', action.unit)
     }
 
     default:

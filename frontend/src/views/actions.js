@@ -6,6 +6,13 @@ function buildType(subType) {
   return `${actionPrefix}/${subType}`
 }
 
+export function setUnit(unit) {
+  return {
+    type: buildType('setUnit'),
+    unit,
+  }
+}
+
 export function setFromDate(fromDate) {
   return {
     type: buildType('setFromDate'),

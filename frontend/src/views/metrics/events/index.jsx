@@ -31,7 +31,12 @@ class EventsDashboard extends Component {
   requestEventsData() {
     const eventsDataHttpRequest = Object
       .keys(this.props.events)
-      .map(eventName => this.props.fetchData(this.props.fromDate, this.props.toDate, eventName))
+      .map(eventName => this.props.fetchData(
+        this.props.fromDate,
+        this.props.toDate,
+        this.props.unit,
+        eventName,
+      ))
 
     return Promise.all(eventsDataHttpRequest)
   }
@@ -98,6 +103,7 @@ class EventsDashboard extends Component {
 
 EventsDashboard.propTypes = {
   events: PropTypes.object.isRequired,
+  unit: PropTypes.string.isRequired,
   fetchData: PropTypes.func.isRequired,
   fetchEventList: PropTypes.func.isRequired,
   fromDate: PropTypes.string.isRequired,
@@ -111,6 +117,7 @@ function mapStateToProps(applicationState) {
 
   return {
     events: eventState.toJS(),
+    unit: globalState.get('unit'),
     fromDate: globalState.get('fromDate'),
     toDate: globalState.get('toDate'),
   }
