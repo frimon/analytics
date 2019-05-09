@@ -24,6 +24,17 @@ class DateInput extends Component {
   }
 
   setDate(event) {
+    const { value } = event.target
+
+    const selectedDate = new Date(value)
+
+    if (
+      selectedDate < new Date(this.props.minDate)
+      || selectedDate > new Date(this.props.maxDate)
+    ) {
+      return
+    }
+
     this.props.setDate(event.target.value)
   }
 
@@ -36,6 +47,8 @@ class DateInput extends Component {
 
 DateInput.propTypes = {
   date: PropTypes.string.isRequired,
+  minDate: PropTypes.string.isRequired,
+  maxDate: PropTypes.string.isRequired,
   setDate: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
 }
