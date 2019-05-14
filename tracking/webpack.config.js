@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   entry: [
     '@babel/polyfill',
-    './webanalytics.js'
+    './webanalytics.js',
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -17,10 +17,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
-          }
+            presets: ['@babel/preset-env'],
+          },
         },
       },
     ],
+  },
+  optimization: {
+    minimize: false,
   },
 }

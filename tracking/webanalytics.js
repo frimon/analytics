@@ -1,37 +1,45 @@
 'use strict'
 
 const cookies = require('browser-cookies')
-const uuid = require('id128').Uuid4
+const uuid = require('uuid/v4')
 
 async function webanalytics(url) {
 
-  const pageViewId = uuid.generate().toRaw()
+  const pageViewId = uuid()
 
-  function post(path, data) {
-    return fetch(`${url}${path}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+  function asyncRequest(method, path, data) {
+
+    return new Promise(resolve => {
+
+      const xhr = buildRequest(method, path, true)
+      xhr.onload = e => resolve(e)
+      xhr.send(JSON.stringify(data))
     })
   }
 
-  function put(path, data) {
+  function syncRequest(method, path, data) {
 
-    const xmlhttp = new XMLHttpRequest()
-    xmlhttp.open('PUT', `${url}${path}`, false)// the false is for making the call synchronous
-    xmlhttp.setRequestHeader('Content-type', 'application/json')
-    xmlhttp.send(JSON.stringify(data))
+    const xhr = buildRequest(method, path, false)
+    return xhr.send(JSON.stringify(data))
+  }
+
+  function buildRequest(method, path, async) {
+
+    const xhr = new XMLHttpRequest()
+    xhr.open(method, `${url}${path}`, async)
+    xhr.setRequestHeader('Content-type', 'application/json')
+
+    return xhr
   }
 
   async function createSession(sessionId, visitorId) {
 
-    await post('/track/session', {
+    const data = {
       sessionId,
       visitorId,
       referer: document.referrer || undefined,
-    })
+    }
+    await asyncRequest('post', '/track/session', data)
   }
 
   async function getSessionId() {
@@ -44,14 +52,13 @@ async function webanalytics(url) {
     if (!session || sessionHasExpired(session)) {
 
       session = {
-        id: uuid.generate().toRaw(),
+        id: uuid(),
       }
 
       await createSession(session.id, getVisitorId())
     }
 
     session.fetchedAt = new Date().valueOf()
-
     cookies.set('session', JSON.stringify(session))
 
     return session.id
@@ -70,7 +77,7 @@ async function webanalytics(url) {
     let visitorId = cookies.get('visitorId')
 
     if (!visitorId) {
-      visitorId = uuid.generate().toRaw()
+      visitorId = uuid()
       cookies.set('visitorId', visitorId, {
         expires: 365 * 5, // 5 years
       })
@@ -81,24 +88,26 @@ async function webanalytics(url) {
 
   async function trackPageView() {
 
-    await post('/track/pageview', {
+    const data = {
       pageViewId,
       sessionId: await getSessionId(),
       url: window.location.href,
-    })
+    }
+    await asyncRequest('post', '/track/pageview', data)
   }
 
   function updatePageViewLeftTime() {
-    put(`/track/pageview/${pageViewId}`)
+    syncRequest('put', `/track/pageview/${pageViewId}`)
   }
 
   async function trackEvent(name, payload) {
 
-    await post('/track/event', {
+    const data = {
       sessionId: await getSessionId(),
       name,
       payload,
-    })
+    }
+    await asyncRequest('post', '/track/event', data)
   }
 
   await trackPageView()
