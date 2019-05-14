@@ -103,6 +103,15 @@ function createApiRouter({ store }) {
     }
   })
 
+  router.get('/statistics/events/:name', async ctx => {
+
+    const { from, to, unit } = ctx.request.query
+    const { name } = ctx.params
+    const data = await store.getEventsStatistics(name, from, to, unit)
+
+    ctx.body = transformStatistics(data, from, to, unit)
+  })
+
   return router
 }
 

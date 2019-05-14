@@ -134,6 +134,15 @@ class Store {
     return query
   }
 
+  async getEventsStatistics(name, from, to, unit) {
+
+    const query = this._queryStatistics(this.db('events'), unit, 'created_at', '*')
+      .where('name', name)
+    this._queryBetweenDates(query, 'created_at', from, to)
+
+    return statistics(query)
+  }
+
   _queryStatistics(query, unit, dateField, countField) {
 
     return query
