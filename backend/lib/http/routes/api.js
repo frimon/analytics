@@ -71,6 +71,14 @@ function createApiRouter({ store }) {
     ctx.body = transformCount(count)
   })
 
+  router.get('/count/session-length', async ctx => {
+
+    const { from, to } = ctx.request.query
+    const count = await store.getSessionLength(from, to)
+
+    ctx.body = transformCount(count)
+  })
+
   router.get('/count/bounce-rate', async ctx => {
 
     const { from, to } = ctx.request.query
@@ -83,6 +91,16 @@ function createApiRouter({ store }) {
     }
 
     ctx.body = transformRate(count)
+  })
+
+  router.get('/events', async ctx => {
+
+    const { from, to } = ctx.request.query
+    const events = await store.getEvents(from, to)
+
+    ctx.body = {
+      data: events.map(({ name, count }) => ({ name, count: parseInt(count, 10) })),
+    }
   })
 
   return router
