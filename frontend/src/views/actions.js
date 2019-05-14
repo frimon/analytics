@@ -41,9 +41,12 @@ export function setLoadingState(isLoading) {
   }
 }
 
-export function setError(errorMessage) {
+export function setError({ errorTitle, errorMessage }) {
   return {
     type: buildType('setError'),
-    errorMessage,
+    error: {
+      errorTitle,
+      errorMessage,
+    },
   }
 }

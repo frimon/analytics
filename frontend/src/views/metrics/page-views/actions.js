@@ -1,3 +1,5 @@
+import { setError } from '../../actions'
+
 const actionPrefix = '@@PAGEVIEWS'
 
 function buildType(subType) {
@@ -11,25 +13,43 @@ export function setData(data) {
   }
 }
 
+export function setCount(count) {
+  return {
+    type: buildType('setCount'),
+    count,
+  }
+}
+
 export function fetchData(from, to, unit) {
   return async (dispatch) => {
-    const data = [
-      ['2019-01-01', 6],
-      ['2019-01-02', 5],
-      ['2019-01-03', 12],
-      ['2019-01-04', 20],
-      ['2019-01-05', 5],
-      ['2019-01-06', 8],
-      ['2019-01-07', 6],
-      ['2019-01-08', 5],
-      ['2019-01-09', 12],
-      ['2019-01-10', 10],
-      ['2019-01-11', 40],
-      ['2019-01-12', 8],
-      ['2019-01-13', 4],
-      ['2019-01-14', 32],
-    ] // await fetch(`/api/statistics/visitors?unique=true&from=2019-01-01%2000%3A00%3A00&to=2019-01-31%2023%3A59%3A59&unit=day&format=graph`)
+    const response = await fetch(`/api/statistics/page-views?from=${from}&to=${to}&unit=${unit}`)
 
-    dispatch(setData(data))
+    if (response.status !== 200) {
+      return dispatch(setError({
+        errorTitle: 'Something went wrong...',
+        errorMessage: 'Unable to get data from the server. Please make sure that all services are running.',
+      }))
+    }
+
+    const json = await response.json()
+
+    return dispatch(setData(json.data))
+  }
+}
+
+export function fetchCount(from, to) {
+  return async (dispatch) => {
+    const response = await fetch(`/api/count/page-views?from=${from}&to=${to}`)
+
+    if (response.status !== 200) {
+      return dispatch(setError({
+        errorTitle: 'Something went wrong...',
+        errorMessage: 'Unable to get data from the server. Please make sure that all services are running.',
+      }))
+    }
+
+    const json = await response.json()
+
+    return dispatch(setCount(json.data))
   }
 }

@@ -1,17 +1,29 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Header } from 'semantic-ui-react'
+import {
+  Container, Message, Icon, Button,
+} from 'semantic-ui-react'
 
-function ApplicationError({ children }) {
-  return (
-    <div className="application-error">
-      <Header>{children}</Header>
-    </div>
-  )
-}
+const ApplicationError = props => (
+  <Container>
+    <Message size="huge" negative icon>
+      <Icon name="exclamation triangle" />
+      <Message.Content>
+        <Message.Header>{props.error.errorTitle}</Message.Header>
+
+        <p>{props.error.errorMessage}</p>
+      </Message.Content>
+    </Message>
+
+    <a href="/">
+      <Button content="Reload application" primary />
+    </a>
+
+  </Container>
+)
 
 ApplicationError.propTypes = {
-  children: PropTypes.any.isRequired,
+  error: PropTypes.any.isRequired,
 }
 
 export default ApplicationError

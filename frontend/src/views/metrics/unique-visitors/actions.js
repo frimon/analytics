@@ -1,3 +1,5 @@
+import { setError } from '../../actions'
+
 const actionPrefix = '@@UNIQUE_VISITORS'
 
 function buildType(subType) {
@@ -22,9 +24,16 @@ export function fetchData(from, to, unit) {
   return async (dispatch) => {
     const response = await fetch(`/api/statistics/visitors?unique&from=${from}&to=${to}&unit=${unit}`)
 
+    if (response.status !== 200) {
+      return dispatch(setError({
+        errorTitle: 'Something went wrong...',
+        errorMessage: 'Unable to get data from the server. Please make sure that all services are running.',
+      }))
+    }
+
     const json = await response.json()
 
-    dispatch(setData(json.data))
+    return dispatch(setData(json.data))
   }
 }
 
@@ -32,8 +41,15 @@ export function fetchCount(from, to) {
   return async (dispatch) => {
     const response = await fetch(`/api/count/visitors?unique&from=${from}&to=${to}`)
 
+    if (response.status !== 200) {
+      return dispatch(setError({
+        errorTitle: 'Something went wrong...',
+        errorMessage: 'Unable to get data from the server. Please make sure that all services are running.',
+      }))
+    }
+
     const json = await response.json()
 
-    dispatch(setCount(json.data))
+    return dispatch(setCount(json.data))
   }
 }
