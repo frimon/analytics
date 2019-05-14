@@ -96,6 +96,22 @@ class Store {
     return statistics(query)
   }
 
+  async getBouncedSessionsStatistics(from, to, unit) {
+
+    const query = this._queryStatistics(this.db('bounced_sessions'), unit, 'created_at', '*')
+    this._queryBetweenDates(query, 'created_at', from, to)
+
+    return statistics(query)
+  }
+
+  async getBouncedSessionsCount(from, to) {
+
+    const query = this.db('bounced_sessions').select([this.db.raw('count(*) as count')])
+    this._queryBetweenDates(query, 'created_at', from, to)
+
+    return count(query)
+  }
+
   _queryStatistics(query, unit, dateField, countField) {
 
     return query

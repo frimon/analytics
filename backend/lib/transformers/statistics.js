@@ -12,17 +12,26 @@ function transformStatistics(data, from, to, unit) {
   while (current.isBefore(stop)) {
 
     const timestamp = current.valueOf()
-    const count = data.has(timestamp) ? data.get(timestamp) : 0
+    const count = getData(data, timestamp)
 
     formattedData.push([
       current.format(dateFormat(unit)),
-      parseInt(count, 10),
+      parseFloat(count),
     ])
 
     current = addUnit(current, unit)
   }
 
   return { data: formattedData }
+}
+
+function getData(data, timestamp) {
+
+  if (typeof data === 'function') {
+    return data(timestamp)
+  }
+
+  return data.get(timestamp) || 0
 }
 
 function dateFormat(unit) {
