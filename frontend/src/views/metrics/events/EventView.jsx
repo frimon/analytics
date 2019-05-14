@@ -15,10 +15,6 @@ class EventView extends Component {
     this.eventName = this.props.match.params.name
   }
 
-  async componentDidMount() {
-    await this.props.fetchData(this.props.fromDate, this.props.toDate, this.eventName)
-  }
-
   render() {
     return (
       <Container>
@@ -44,10 +40,7 @@ class EventView extends Component {
 
 
 EventView.propTypes = {
-  fromDate: PropTypes.string.isRequired,
-  toDate: PropTypes.string.isRequired,
   match: PropTypes.object.isRequired,
-  fetchData: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(applicationState) {

@@ -1,23 +1,40 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Chart } from 'react-google-charts'
-import { Grid } from 'semantic-ui-react'
+import {
+  Grid, Dimmer, Loader, Segment,
+} from 'semantic-ui-react'
 
+const ChartComponent = (props) => {
+  if (props.data.length === 0) {
+    return (
+      <div />
+    )
+  }
 
-const ChartComponent = props => (
-  <Grid.Row>
-    <Grid.Column>
-      <Chart
-        height={props.height}
-        chartType={props.chartType}
-        loader={<div>Loading Chart</div>}
-        data={props.data}
-        options={props.options}
-        rootProps={{ 'data-testid': '1' }}
-      />
-    </Grid.Column>
-  </Grid.Row>
-)
+  const loader = (
+    <Segment placeholder>
+      <Dimmer active inverted>
+        <Loader inverted>Loading</Loader>
+      </Dimmer>
+    </Segment>
+  )
+
+  return (
+    <Grid.Row>
+      <Grid.Column>
+        <Chart
+          height={props.height}
+          chartType={props.chartType}
+          loader={loader}
+          data={props.data}
+          options={props.options}
+          rootProps={{ 'data-testid': '1' }}
+        />
+      </Grid.Column>
+    </Grid.Row>
+  )
+}
 
 ChartComponent.propTypes = {
   data: PropTypes.array.isRequired,

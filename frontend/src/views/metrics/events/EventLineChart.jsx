@@ -1,45 +1,69 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
-import LineChart from '../../charts/LineChart'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { fetchData } from './actions'
 import { transformData } from '../../helpers/googleChartHelpers'
+import LineChart from '../../charts/LineChart'
 
-const EventLineChart = (props) => {
-  if (!props.events[props.eventName]) {
-    return (<h1>Loading</h1>)
+class EventLineChart extends Component {
+  async componentDidMount() {
+    await this.props.fetchData(
+      this.props.fromDate,
+      this.props.toDate,
+      this.props.unit,
+      this.props.eventName,
+    )
   }
 
-  const axisType = props.unit === 'hour' ? 'datetime' : 'date'
-  const horizontalAxis = { type: axisType, label: 'Day' }
-  const lineLabel = 'Events'
-  const plotData = transformData(props.events[props.eventName], horizontalAxis, [lineLabel])
+  async componentDidUpdate(previousProperties) {
+    if (
+      previousProperties.fromDate !== this.props.fromDate
+      || previousProperties.toDate !== this.props.toDate
+      || previousProperties.unit !== this.props.unit
+    ) {
+      await this.props.fetchData(
+        this.props.fromDate,
+        this.props.toDate,
+        this.props.unit,
+        this.props.eventName,
+      )
+    }
+  }
 
-  return (
-    <LineChart
-      chartType="LineChart"
-      chartName=""
-      height="300px"
-      data={plotData}
-      unit={props.unit}
-      fetchData={props.fetchData}
-      fromDate={props.fromDate}
-      toDate={props.toDate}
-      options={{
-        title: props.eventName,
-      }}
-    />
-  )
+  render() {
+    if (!this.props.events[this.props.eventName]) {
+      return (<h1>Loading</h1>)
+    }
+
+    const axisType = this.props.unit === 'hour' ? 'datetime' : 'date'
+    const horizontalAxis = { type: axisType, label: 'Day' }
+    const lineLabel = 'Events'
+    const plotData = transformData(
+      this.props.events[this.props.eventName],
+      horizontalAxis,
+      [lineLabel],
+    )
+
+    return (
+      <LineChart
+        data={plotData}
+        height="300px"
+        options={{
+          title: this.props.eventName,
+        }}
+      />
+    )
+  }
 }
 
 EventLineChart.propTypes = {
-  events: PropTypes.object.isRequired,
-  eventName: PropTypes.string.isRequired,
-  unit: PropTypes.string.isRequired,
-  fetchData: PropTypes.func.isRequired,
   fromDate: PropTypes.string.isRequired,
   toDate: PropTypes.string.isRequired,
+  eventName: PropTypes.string.isRequired,
+  unit: PropTypes.string.isRequired,
+  events: PropTypes.object.isRequired,
+  fetchData: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(applicationState) {
@@ -59,5 +83,6 @@ function mapDispatchToProps(dispatch) {
     fetchData,
   }, dispatch)
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventLineChart)

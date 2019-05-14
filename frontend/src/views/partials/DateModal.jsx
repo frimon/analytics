@@ -61,6 +61,8 @@ const DateModal = (props) => {
             <DateInput
               label="From"
               date={fromDateFormatted}
+              minDate={(new Date(0, 0, 0)).toString()}
+              maxDate={props.toDate}
               setDate={props.setFromDate}
             />
           </Grid.Column>
@@ -68,6 +70,8 @@ const DateModal = (props) => {
           <Grid.Column width={6}>
             <DateInput
               label="To"
+              minDate={props.fromDate}
+              maxDate={(new Date(2999, 11, 11)).toString()}
               date={toDateFormatted}
               setDate={props.setToDate}
             />
