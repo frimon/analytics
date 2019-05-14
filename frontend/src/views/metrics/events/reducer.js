@@ -17,8 +17,12 @@ export default (state = initialState, action) => {
     }
 
     case 'setEventsList': {
+      if (action.data.events.length === 0) {
+        return state
+      }
+
       const object = {}
-      action.data.events.forEach((eventName) => { (object[eventName] = []) })
+      action.data.events.forEach(({ name }) => { (object[name] = []) })
 
       return state.merge(object)
     }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
-import { Route } from 'react-router'
+import { Route, withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Index from '../views/overview/index'
@@ -21,8 +21,8 @@ const App = (props) => {
 
       <Switch>
         <Route exact key="index" path="/" render={() => (<Index />)} />
-        <Route exact key="events" path="/events" render={() => (<EventsDashboard />)} />
         <Route key="viewEvent" path="/events/:name" component={EventView} />
+        <Route exact key="events" path="/events" render={() => (<EventsDashboard />)} />
         <Route key="notFound" component={NotFound} />
       </Switch>
     </Container>
@@ -45,4 +45,4 @@ function mapStateToProps(applicationState) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default withRouter(connect(mapStateToProps)(App))

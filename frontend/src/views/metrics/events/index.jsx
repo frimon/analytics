@@ -19,11 +19,21 @@ class EventsDashboard extends Component {
   async componentDidMount() {
     await this.props.fetchEventList()
 
+    if (Object.keys(this.props.events).length < 0) {
+      return
+    }
+
     await this.requestEventsData()
   }
 
   async componentDidUpdate(prevProps) {
     if (prevProps.fromDate !== this.props.fromDate || prevProps.toDate !== this.props.toDate) {
+      await this.props.fetchEventList()
+
+      if (Object.keys(this.props.events).length < 0) {
+        return
+      }
+
       await this.requestEventsData()
     }
   }
@@ -43,23 +53,37 @@ class EventsDashboard extends Component {
 
   render() {
     const eventNames = Object.keys(this.props.events)
-    const eventRows = eventNames.map((eventName) => {
-      const totalEventTriggers = this.props.events[eventName]
-        // eslint-disable-next-line no-unused-vars
-        .reduce((sum, [date, currentValue]) => sum + currentValue, 0)
 
-      return (
-        <Table.Row key={eventName}>
-          <Table.Cell>
-            <NavLink to={`${this.props.location.pathname}/${eventName}`}>{eventName}</NavLink>
-          </Table.Cell>
+    let eventRows = (
+      <Table.Row key="default">
+        <Table.Cell>
+          No events found...
+        </Table.Cell>
 
-          <Table.Cell>
-            {totalEventTriggers}
-          </Table.Cell>
-        </Table.Row>
-      )
-    })
+        <Table.Cell>
+        </Table.Cell>
+      </Table.Row>
+    )
+
+    if (eventNames.length > 0) {
+      eventRows = eventNames.map((eventName) => {
+        const totalEventTriggers = this.props.events[eventName]
+          // eslint-disable-next-line no-unused-vars
+          .reduce((sum, [date, currentValue]) => sum + currentValue, 0)
+
+        return (
+          <Table.Row key={eventName}>
+            <Table.Cell>
+              <NavLink to={`${this.props.location.pathname}/${eventName}`}>{eventName}</NavLink>
+            </Table.Cell>
+
+            <Table.Cell>
+              {totalEventTriggers}
+            </Table.Cell>
+          </Table.Row>
+        )
+      })
+    }
 
     return (
       <Container>
