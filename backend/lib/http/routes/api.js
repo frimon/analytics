@@ -1,42 +1,76 @@
 'use strict'
 
 const KoaRouter = require('koa-router')
-const { transformCount, transformRate, transformStatistics } = require('../../transformers')
+const { transformNumeric, transformTimeseries } = require('../../transformers')
 
 function createApiRouter({ store }) {
 
   const router = new KoaRouter({ prefix: '/api' })
 
-  router.get('/statistics/visitors', async ctx => {
+  // VISITORS
+
+  router.get('/visitors/timeseries', async ctx => {
 
     const { from, to, unit } = ctx.request.query
     const unique = 'unique' in ctx.request.query
-    const data = await store.getVisitorStatistics(from, to, unit, unique)
+    const data = await store.getSessionTimeseries(from, to, unit, unique)
 
-    ctx.body = transformStatistics(data, from, to, unit)
+    ctx.body = transformTimeseries(data, from, to, unit)
   })
 
-  router.get('/statistics/page-views', async ctx => {
+  router.get('/visitors/numeric/total', async ctx => {
 
-    const { from, to, unit } = ctx.request.query
-    const data = await store.getPageViewStatistics(from, to, unit)
+    const { from, to } = ctx.request.query
+    const unique = 'unique' in ctx.request.query
+    const count = await store.getSessionTotal(from, to, unique)
 
-    ctx.body = transformStatistics(data, from, to, unit)
+    ctx.body = transformNumeric(count)
   })
 
-  router.get('/statistics/session-length', async ctx => {
+  // PAGE VIEWS
+
+  router.get('/page-views/timeseries', async ctx => {
 
     const { from, to, unit } = ctx.request.query
-    const data = await store.getSessionLengthStatistics(from, to, unit)
+    const data = await store.getPageViewTimeseries(from, to, unit)
 
-    ctx.body = transformStatistics(data, from, to, unit)
+    ctx.body = transformTimeseries(data, from, to, unit)
   })
 
-  router.get('/statistics/bounce-rate', async ctx => {
+  router.get('/page-views/numeric/total', async ctx => {
+
+    const { from, to } = ctx.request.query
+    const unique = 'unique' in ctx.request.query
+    const count = await store.getPageViewTotal(from, to, unique)
+
+    ctx.body = transformNumeric(count)
+  })
+
+  // SESSION LENGTH
+
+  router.get('/session-length/timeseries', async ctx => {
 
     const { from, to, unit } = ctx.request.query
-    const bouncedSessionsData = await store.getBouncedSessionsStatistics(from, to, unit)
-    const totalSessionsData = await store.getVisitorStatistics(from, to, unit)
+    const data = await store.getSessionLengthTimeseries(from, to, unit)
+
+    ctx.body = transformTimeseries(data, from, to, unit)
+  })
+
+  router.get('/session-length/numeric/average', async ctx => {
+
+    const { from, to } = ctx.request.query
+    const count = await store.getSessionLengthAverage(from, to)
+
+    ctx.body = transformNumeric(count, false)
+  })
+
+  // BOUNCE RATE
+
+  router.get('/bounce-rate/timeseries', async ctx => {
+
+    const { from, to, unit } = ctx.request.query
+    const bouncedSessionsData = await store.getBouncedSessionTimeseries(from, to, unit)
+    const totalSessionsData = await store.getSessionTimeseries(from, to, unit)
 
     const getDatapoint = timestamp => {
 
@@ -50,48 +84,24 @@ function createApiRouter({ store }) {
       return bounced / total
     }
 
-    ctx.body = transformStatistics(getDatapoint, from, to, unit)
+    ctx.body = transformTimeseries(getDatapoint, from, to, unit)
   })
 
-  router.get('/count/visitors', async ctx => {
+  router.get('/bounce-rate/numeric/total', async ctx => {
 
     const { from, to } = ctx.request.query
-    const unique = 'unique' in ctx.request.query
-    const count = await store.getVisitorCount(from, to, unique)
-
-    ctx.body = transformCount(count)
-  })
-
-  router.get('/count/page-views', async ctx => {
-
-    const { from, to } = ctx.request.query
-    const unique = 'unique' in ctx.request.query
-    const count = await store.getPageViewCount(from, to, unique)
-
-    ctx.body = transformCount(count)
-  })
-
-  router.get('/count/session-length', async ctx => {
-
-    const { from, to } = ctx.request.query
-    const count = await store.getSessionLength(from, to)
-
-    ctx.body = transformCount(count)
-  })
-
-  router.get('/count/bounce-rate', async ctx => {
-
-    const { from, to } = ctx.request.query
-    const bouncedSessionsCount = await store.getBouncedSessionsCount(from, to)
-    const totalSessionCount = await store.getVisitorCount(from, to)
+    const bouncedSessionsCount = await store.getBouncedSessionTotal(from, to)
+    const totalSessionCount = await store.getSessionTotal(from, to)
 
     let count = 0
     if (totalSessionCount > 0) {
       count = bouncedSessionsCount / totalSessionCount
     }
 
-    ctx.body = transformRate(count)
+    ctx.body = transformNumeric(count, false)
   })
+
+  // EVENTS
 
   router.get('/events', async ctx => {
 
@@ -103,13 +113,13 @@ function createApiRouter({ store }) {
     }
   })
 
-  router.get('/statistics/events/:name', async ctx => {
+  router.get('/events/:name/timeseries', async ctx => {
 
     const { from, to, unit } = ctx.request.query
     const { name } = ctx.params
-    const data = await store.getEventsStatistics(name, from, to, unit)
+    const data = await store.getEventTimeseries(name, from, to, unit)
 
-    ctx.body = transformStatistics(data, from, to, unit)
+    ctx.body = transformTimeseries(data, from, to, unit)
   })
 
   return router

@@ -1,11 +1,9 @@
 'use strict'
 
-const { transformCount } = require('./count')
-const { transformRate } = require('./rate')
-const { transformStatistics } = require('./statistics')
+const { transformNumeric } = require('./numeric')
+const { transformTimeseries } = require('./timeseries')
 
 module.exports = {
-  transformCount,
-  transformRate,
-  transformStatistics,
+  transformNumeric,
+  transformTimeseries,
 }

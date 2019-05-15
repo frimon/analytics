@@ -48,41 +48,57 @@ class Store {
     })
   }
 
-  async getVisitorStatistics(from, to, unit, unique = false) {
+  async getSessionTimeseries(from, to, unit, unique = false) {
 
     const selectCount = unique ? 'distinct visitor_id' : '*'
-    const query = this._queryStatistics(this.db('sessions'), unit, 'created_at', selectCount)
+    const query = this._queryTimeseries(this.db('sessions'), unit, 'created_at', selectCount)
     this._queryBetweenDates(query, 'created_at', from, to)
 
-    return statistics(query)
+    return timeseries(query)
   }
 
-  async getVisitorCount(from, to, unique = false) {
+  async getSessionTotal(from, to, unique = false) {
 
     const selectCount = unique ? 'distinct visitor_id' : '*'
-    const query = this.db('sessions').select([this.db.raw(`count(${selectCount}) as count`)])
+    const query = this.db('sessions').select([this.db.raw(`count(${selectCount}) as number`)])
     this._queryBetweenDates(query, 'created_at', from, to)
 
-    return count(query)
+    return numeric(query)
   }
 
-  async getPageViewStatistics(from, to, unit) {
+  async getBouncedSessionTimeseries(from, to, unit) {
 
-    const query = this._queryStatistics(this.db('page_views'), unit, 'visited_at', '*')
+    const query = this._queryTimeseries(this.db('bounced_sessions'), unit, 'created_at', '*')
+    this._queryBetweenDates(query, 'created_at', from, to)
+
+    return timeseries(query)
+  }
+
+  async getBouncedSessionTotal(from, to) {
+
+    const query = this.db('bounced_sessions').select([this.db.raw('count(*) as number')])
+    this._queryBetweenDates(query, 'created_at', from, to)
+
+    return numeric(query)
+  }
+
+  async getPageViewTimeseries(from, to, unit) {
+
+    const query = this._queryTimeseries(this.db('page_views'), unit, 'visited_at', '*')
     this._queryBetweenDates(query, 'visited_at', from, to)
 
-    return statistics(query)
+    return timeseries(query)
   }
 
-  async getPageViewCount(from, to) {
+  async getPageViewTotal(from, to) {
 
-    const query = this.db('page_views').select([this.db.raw('count(*) as count')])
+    const query = this.db('page_views').select([this.db.raw('count(*) as number')])
     this._queryBetweenDates(query, 'visited_at', from, to)
 
-    return count(query)
+    return numeric(query)
   }
 
-  async getSessionLengthStatistics(from, to, unit) {
+  async getSessionLengthTimeseries(from, to, unit) {
 
     const query = this.db('session_lengths')
       .select([
@@ -93,31 +109,15 @@ class Store {
 
     this._queryBetweenDates(query, 'created_at', from, to)
 
-    return statistics(query)
+    return timeseries(query)
   }
 
-  async getSessionLength(from, to) {
+  async getSessionLengthAverage(from, to) {
 
-    const query = this.db('session_lengths').select([this.db.raw('avg(length) as count')])
+    const query = this.db('session_lengths').select([this.db.raw('avg(length) as number')])
     this._queryBetweenDates(query, 'created_at', from, to)
 
-    return count(query)
-  }
-
-  async getBouncedSessionsStatistics(from, to, unit) {
-
-    const query = this._queryStatistics(this.db('bounced_sessions'), unit, 'created_at', '*')
-    this._queryBetweenDates(query, 'created_at', from, to)
-
-    return statistics(query)
-  }
-
-  async getBouncedSessionsCount(from, to) {
-
-    const query = this.db('bounced_sessions').select([this.db.raw('count(*) as count')])
-    this._queryBetweenDates(query, 'created_at', from, to)
-
-    return count(query)
+    return numeric(query)
   }
 
   async getEvents(from, to) {
@@ -134,16 +134,15 @@ class Store {
     return query
   }
 
-  async getEventsStatistics(name, from, to, unit) {
+  async getEventTimeseries(name, from, to, unit) {
 
-    const query = this._queryStatistics(this.db('events'), unit, 'created_at', '*')
-      .where('name', name)
+    const query = this._queryTimeseries(this.db('events'), unit, 'created_at', '*').where('name', name)
     this._queryBetweenDates(query, 'created_at', from, to)
 
-    return statistics(query)
+    return timeseries(query)
   }
 
-  _queryStatistics(query, unit, dateField, countField) {
+  _queryTimeseries(query, unit, dateField, countField) {
 
     return query
       .select([
@@ -167,7 +166,7 @@ class Store {
   }
 }
 
-async function statistics(query) {
+async function timeseries(query) {
 
   const response = await query
 
@@ -177,10 +176,10 @@ async function statistics(query) {
   ]))
 }
 
-async function count(query) {
+async function numeric(query) {
 
   const response = await query
-  return response[0].count
+  return response[0].number
 }
 
 module.exports = {

@@ -2,7 +2,7 @@
 
 const moment = require('moment')
 
-function transformStatistics(data, from, to, unit) {
+function transformTimeseries(data, from, to, unit) {
 
   let current = moment.utc(from)
   const stop = moment.utc(to)
@@ -56,4 +56,6 @@ function addUnit(current, unit) {
   }
 }
 
-module.exports = { transformStatistics }
+module.exports = {
+  transformTimeseries,
+}
