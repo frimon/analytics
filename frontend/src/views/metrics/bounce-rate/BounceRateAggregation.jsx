@@ -1,46 +1,29 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Statistic, Popup } from 'semantic-ui-react'
 import { fetchCount } from './actions'
+import NumericalStatistic from '../../statistics/NumericalStatistic'
 
-class BounceRateAggregation extends Component {
-  async componentDidMount() {
-    await this.props.fetchCount(this.props.fromDate, this.props.toDate)
-  }
-
-  async componentDidUpdate(prevProps) {
-    if (prevProps.fromDate !== this.props.fromDate || prevProps.toDate !== this.props.toDate) {
-      await this.props.fetchCount(this.props.fromDate, this.props.toDate)
-    }
-  }
-
-  render() {
-    return (
-      <Popup
-        content="Bounce rate is the percentage of visitors to a particular website who navigate away from the site after viewing only one page. A high bounce rate can occur if your users find your content non-satisfactory."
-        trigger={<Statistic label="Bounce Rate" value={`${this.props.count.toPrecision(2)}%`} inverted />}
-      />
-    )
-  }
-}
+const BounceRateAggregation = props => (
+  <NumericalStatistic
+    info="Bounce rate is the percentage of visitors to a particular website who navigate away from the site after viewing only one page. A high bounce rate can occur if your users find your content non-satisfactory."
+    label="Bounce Rate"
+    value={`${props.count.toPrecision(3)}%`}
+    fetchCount={props.fetchCount}
+  />
+)
 
 BounceRateAggregation.propTypes = {
-  count: PropTypes.number.isRequired,
+  count: PropTypes.any.isRequired,
   fetchCount: PropTypes.func.isRequired,
-  fromDate: PropTypes.string.isRequired,
-  toDate: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(applicationState) {
-  const globalState = applicationState.global
   const bounceRateState = applicationState.bounceRate
 
   return {
     count: bounceRateState.get('count'),
-    fromDate: globalState.get('fromDate'),
-    toDate: globalState.get('toDate'),
   }
 }
 
