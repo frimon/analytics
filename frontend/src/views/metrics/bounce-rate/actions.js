@@ -53,8 +53,6 @@ export function fetchCount(from, to) {
 
     const json = await response.json()
 
-    const dataToPercent = json.data * 100
-
-    return dispatch(setCount(dataToPercent))
+    return dispatch(setCount(json.data))
   }
 }

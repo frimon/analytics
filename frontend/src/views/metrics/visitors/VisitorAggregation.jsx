@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import numeral from 'numeral'
 import { fetchCount } from './actions'
 import NumericalStatistic from '../../statistics/NumericalStatistic'
 
@@ -9,7 +10,7 @@ const VisitorAggregation = props => (
   <NumericalStatistic
     info="A visitor is someone interacting with the website under a given time period."
     label="# Visitors"
-    value={props.count}
+    value={numeral(props.count).format('0a')}
     fetchCount={props.fetchCount}
   />
 )
