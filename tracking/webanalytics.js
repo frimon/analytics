@@ -6,6 +6,8 @@ const uuid = require('uuid/v4')
 async function webanalytics(url) {
 
   const pageViewId = uuid()
+  const pageLoadTime = (new Date()).valueOf()
+  const timeout = 1000 * 60 * 30 // 30 minutes
 
   function asyncRequest(method, path, data) {
 
@@ -110,6 +112,20 @@ async function webanalytics(url) {
     await asyncRequest('post', '/track/event', data)
   }
 
+  function checkTimeout() {
+
+    setTimeout(() => {
+
+      const now = (new Date()).valueOf()
+      if (pageLoadTime + timeout < now) {
+        window.onbeforeunload = Function.prototype // Disable unload event if timed out
+      } else {
+        checkTimeout()
+      }
+    }, 1000)
+  }
+
+  checkTimeout()
   await trackPageView()
 
   window.webanalytics.trackEvent = trackEvent

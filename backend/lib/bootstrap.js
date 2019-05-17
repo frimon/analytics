@@ -10,6 +10,14 @@ async function start() {
   const httpServer = createHttpServer({ store })
   httpServer.listen(config.http.port)
   console.log(`Listening to port ${config.http.port}`)
+
+  setInterval(async () => {
+    const countUpdated = await store.updateTimedoutPageViews()
+    if (countUpdated > 0) {
+      console.log(`Updated ${countUpdated} page views that was timed out`)
+    }
+  }, 60000)
+
 }
 
 module.exports = { start }

@@ -1,6 +1,7 @@
 'use strict'
 
 const ipInt = require('ip-to-int')
+const moment = require('moment')
 
 class Store {
 
@@ -142,6 +143,17 @@ class Store {
     return timeseries(query)
   }
 
+  async updateTimedoutPageViews() {
+
+    const date = moment().subtract(30, 'minute').toISOString()
+    const query = this.db('page_views')
+      .whereNull('left_at')
+      .where('visited_at', '<=', date)
+      .update({ left_at: moment().toISOString() })
+
+    return query
+  }
+
   _queryTimeseries(query, unit, dateField, countField) {
 
     return query
@@ -164,6 +176,7 @@ class Store {
 
     return query
   }
+
 }
 
 async function timeseries(query) {
