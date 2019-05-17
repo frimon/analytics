@@ -2,6 +2,7 @@
 
 const KoaRouter = require('koa-router')
 const { transformNumeric, transformTimeseries } = require('../../transformers')
+const { validateGetNumeric, validateGetTimeseries } = require('./validation')
 
 function createApiRouter({ store }) {
 
@@ -9,7 +10,7 @@ function createApiRouter({ store }) {
 
   // VISITORS
 
-  router.get('/visitors/timeseries', async ctx => {
+  router.get('/visitors/timeseries', validateGetTimeseries, async ctx => {
 
     const { from, to, unit } = ctx.request.query
     const unique = 'unique' in ctx.request.query
@@ -18,7 +19,7 @@ function createApiRouter({ store }) {
     ctx.body = transformTimeseries(data, from, to, unit)
   })
 
-  router.get('/visitors/numeric/total', async ctx => {
+  router.get('/visitors/numeric/total', validateGetNumeric, async ctx => {
 
     const { from, to } = ctx.request.query
     const unique = 'unique' in ctx.request.query
@@ -29,7 +30,7 @@ function createApiRouter({ store }) {
 
   // PAGE VIEWS
 
-  router.get('/page-views/timeseries', async ctx => {
+  router.get('/page-views/timeseries', validateGetTimeseries, async ctx => {
 
     const { from, to, unit } = ctx.request.query
     const data = await store.getPageViewTimeseries(from, to, unit)
@@ -37,7 +38,7 @@ function createApiRouter({ store }) {
     ctx.body = transformTimeseries(data, from, to, unit)
   })
 
-  router.get('/page-views/numeric/total', async ctx => {
+  router.get('/page-views/numeric/total', validateGetNumeric, async ctx => {
 
     const { from, to } = ctx.request.query
     const unique = 'unique' in ctx.request.query
@@ -48,7 +49,7 @@ function createApiRouter({ store }) {
 
   // SESSION LENGTH
 
-  router.get('/session-length/timeseries', async ctx => {
+  router.get('/session-length/timeseries', validateGetTimeseries, async ctx => {
 
     const { from, to, unit } = ctx.request.query
     const data = await store.getSessionLengthTimeseries(from, to, unit)
@@ -56,7 +57,7 @@ function createApiRouter({ store }) {
     ctx.body = transformTimeseries(data, from, to, unit)
   })
 
-  router.get('/session-length/numeric/average', async ctx => {
+  router.get('/session-length/numeric/average', validateGetNumeric, async ctx => {
 
     const { from, to } = ctx.request.query
     const count = await store.getSessionLengthAverage(from, to)
@@ -66,7 +67,7 @@ function createApiRouter({ store }) {
 
   // BOUNCE RATE
 
-  router.get('/bounce-rate/timeseries', async ctx => {
+  router.get('/bounce-rate/timeseries', validateGetTimeseries, async ctx => {
 
     const { from, to, unit } = ctx.request.query
     const bouncedSessionsData = await store.getBouncedSessionTimeseries(from, to, unit)
@@ -87,7 +88,7 @@ function createApiRouter({ store }) {
     ctx.body = transformTimeseries(getDatapoint, from, to, unit)
   })
 
-  router.get('/bounce-rate/numeric/total', async ctx => {
+  router.get('/bounce-rate/numeric/total', validateGetNumeric, async ctx => {
 
     const { from, to } = ctx.request.query
     const bouncedSessionsCount = await store.getBouncedSessionTotal(from, to)
@@ -113,7 +114,7 @@ function createApiRouter({ store }) {
     }
   })
 
-  router.get('/events/:name/timeseries', async ctx => {
+  router.get('/events/:name/timeseries', validateGetTimeseries, async ctx => {
 
     const { from, to, unit } = ctx.request.query
     const { name } = ctx.params

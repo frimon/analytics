@@ -1,12 +1,13 @@
 'use strict'
 
 const KoaRouter = require('koa-router')
+const { validateCreateEvent, validateCreatePageView, validateCreateSession } = require('./validation')
 
 function createTrackRouter({ store }) {
 
   const router = new KoaRouter({ prefix: '/track' })
 
-  router.post('/session', async ctx => {
+  router.post('/session', validateCreateSession, async ctx => {
 
     const { sessionId, visitorId, referer } = ctx.request.body
     const ip = validateIp(ctx.request.ip) ? ctx.request.ip : '127.0.0.1'
@@ -22,7 +23,7 @@ function createTrackRouter({ store }) {
     ctx.body = { ok: true }
   })
 
-  router.post('/pageview', async ctx => {
+  router.post('/pageview', validateCreatePageView, async ctx => {
 
     const { pageViewId, sessionId, url } = ctx.request.body
 
@@ -41,7 +42,7 @@ function createTrackRouter({ store }) {
     ctx.body = { ok: true }
   })
 
-  router.post('/event', async ctx => {
+  router.post('/event', validateCreateEvent, async ctx => {
 
     const { sessionId, name, payload } = ctx.request.body
 
