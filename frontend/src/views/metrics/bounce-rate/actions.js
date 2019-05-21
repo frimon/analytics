@@ -22,7 +22,7 @@ export function setAverage(count) {
 
 export function fetchData(from, to, unit) {
   return async (dispatch) => {
-    const response = await fetch(`/api/statistics/bounce-rate?from=${from}&to=${to}&unit=${unit}`)
+    const response = await fetch(`/api/bounce-rate/timeseries?from=${from}&to=${to}&unit=${unit}`)
 
     if (response.status !== 200) {
       return dispatch(setError({
@@ -40,9 +40,9 @@ export function fetchData(from, to, unit) {
   }
 }
 
-export function fetchCount(from, to) {
+export function fetchAverage(from, to) {
   return async (dispatch) => {
-    const response = await fetch(`/api/count/bounce-rate?from=${from}&to=${to}`)
+    const response = await fetch(`/api/bounce-rate/numeric/total?from=${from}&to=${to}`)
 
     if (response.status !== 200) {
       return dispatch(setError({

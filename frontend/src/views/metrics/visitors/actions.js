@@ -22,7 +22,7 @@ export function setCount(count) {
 
 export function fetchData(from, to, unit) {
   return async (dispatch) => {
-    const response = await fetch(`/api/statistics/visitors?from=${from}&to=${to}&unit=${unit}`)
+    const response = await fetch(`/api/visitors/timeseries?from=${from}&to=${to}&unit=${unit}`)
 
     if (response.status !== 200) {
       return dispatch(setError({
@@ -39,7 +39,7 @@ export function fetchData(from, to, unit) {
 
 export function fetchCount(from, to) {
   return async (dispatch) => {
-    const response = await fetch(`/api/count/visitors?from=${from}&to=${to}`)
+    const response = await fetch(`/api/visitors/numeric/total?from=${from}&to=${to}`)
 
     if (response.status !== 200) {
       return dispatch(setError({

@@ -22,7 +22,7 @@ export function setAverage(count) {
 
 export function fetchData(from, to, unit) {
   return async (dispatch) => {
-    const response = await fetch(`/api/statistics/session-length?from=${from}&to=${to}&unit=${unit}`)
+    const response = await fetch(`/api/session-length/timeseries?from=${from}&to=${to}&unit=${unit}`)
 
     if (response.status !== 200) {
       return dispatch(setError({
@@ -37,9 +37,9 @@ export function fetchData(from, to, unit) {
   }
 }
 
-export function fetchCount(from, to) {
+export function fetchAverage(from, to) {
   return async (dispatch) => {
-    const response = await fetch(`/api/count/session-length?from=${from}&to=${to}`)
+    const response = await fetch(`/api/session-length/numeric/average?from=${from}&to=${to}`)
 
     if (response.status !== 200) {
       return dispatch(setError({

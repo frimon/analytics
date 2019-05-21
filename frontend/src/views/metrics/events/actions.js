@@ -44,7 +44,7 @@ export function fetchEventList() {
 
 export function fetchData(from, to, unit, eventName) {
   return async (dispatch) => {
-    const response = await fetch(`/api/statistics/events/${eventName}?from=${from}&to=${to}&unit=${unit}`)
+    const response = await fetch(`/api/events/${eventName}/timeseries?from=${from}&to=${to}&unit=${unit}`)
 
     if (response.status !== 200) {
       return dispatch(setError({
