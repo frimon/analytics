@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, Dropdown } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 import DateModal from './DateModal'
 import Introduction from '../introduction/Introduction'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router'
-import { Container, Grid } from 'semantic-ui-react'
+import { Container, Grid, Segment } from 'semantic-ui-react'
 import VisitorLineChart from '../metrics/visitors/VisitorLineChart'
 import VisitorAggregation from '../metrics/visitors/VisitorAggregation'
 import UniqueVisitorLineChart from '../metrics/unique-visitors/UniqueVisitorLineChart'
@@ -14,30 +14,32 @@ import BounceRateAggregation from '../metrics/bounce-rate/BounceRateAggregation'
 
 const Overview = () => (
   <Container>
-    <Grid padded columns="equal">
-      <Grid.Row>
-        <Grid.Column stretched tablet="8" computer="3" color="blue" textAlign="center">
+    <Segment color="blue" inverted>
+      <Grid padded="vertically" columns="equal" divided>
+        <Grid.Column stretched className="statsColumn" tablet="8" computer="3" color="blue" textAlign="center">
           <VisitorAggregation />
         </Grid.Column>
 
-        <Grid.Column stretched tablet="8" computer="3" color="blue" textAlign="center">
+        <Grid.Column stretched className="statsColumn" tablet="8" computer="3" color="blue" textAlign="center">
           <UniqueVisitorAggregation />
         </Grid.Column>
 
-        <Grid.Column stretched tablet="8" computer="3" color="blue" textAlign="center">
+        <Grid.Column stretched className="statsColumn" tablet="8" computer="3" color="blue" textAlign="center">
           <PageViewsAggregation />
         </Grid.Column>
 
-        <Grid.Column stretched tablet="8" computer="3" color="blue" textAlign="center">
+        <Grid.Column stretched className="statsColumn" tablet="8" computer="3" color="blue" textAlign="center">
           <AverageSessionLengthAggregation />
         </Grid.Column>
 
-        <Grid.Column stretched color="blue" textAlign="center">
+        <Grid.Column stretched className="statsColumn" color="blue" textAlign="center">
           <BounceRateAggregation />
         </Grid.Column>
-      </Grid.Row>
+      </Grid>
+    </Segment>
 
-      <Grid.Column tablet="16" computer="8">
+    <Grid>
+      <Grid.Column tablet="16" computer="16">
         <VisitorLineChart />
       </Grid.Column>
 
@@ -56,7 +58,6 @@ const Overview = () => (
       <Grid.Column tablet="16" computer="8">
         <BounceRateLineChart />
       </Grid.Column>
-
     </Grid>
   </Container>
 )

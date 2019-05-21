@@ -3,46 +3,27 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { fetchData } from './actions'
-import { transformData } from '../../helpers/googleChartHelpers'
-import MetricChart from '../../charts/MetricChart'
-import LineChart from '../../charts/LineChart'
+import MetricLineChart from '../../charts/MetricLineChart'
 
-class AverageSessionLengthLineChart extends MetricChart {
-  render() {
-    const axisType = this.props.unit === 'hour' ? 'datetime' : 'date'
-    const horizontalAxis = { type: axisType, label: 'Day' }
-    const lineLabel = 'Average Session Length'
-    const plotData = transformData(this.props.data, horizontalAxis, [lineLabel])
-
-    return (
-      <LineChart
-        data={plotData}
-        height="300px"
-        options={{
-          title: 'Average Session Length (seconds)',
-        }}
-      />
-    )
-  }
-}
+const AverageSessionLengthLineChart = props => (
+  <MetricLineChart
+    chartTitle="Average Session Length (seconds)"
+    lineLabel="Average Session Length"
+    data={props.data}
+    fetchData={props.fetchData}
+  />
+)
 
 AverageSessionLengthLineChart.propTypes = {
-  fromDate: PropTypes.string.isRequired,
-  toDate: PropTypes.string.isRequired,
-  unit: PropTypes.string.isRequired,
   data: PropTypes.array.isRequired,
   fetchData: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(applicationState) {
   const averageSessionLengthState = applicationState.averageSessionLength
-  const globalState = applicationState.global
 
   return {
     data: averageSessionLengthState.get('data').toJS(),
-    unit: globalState.get('unit'),
-    fromDate: globalState.get('fromDate'),
-    toDate: globalState.get('toDate'),
   }
 }
 

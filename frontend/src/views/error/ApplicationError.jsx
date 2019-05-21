@@ -5,7 +5,7 @@ import {
 } from 'semantic-ui-react'
 
 const ApplicationError = props => (
-  <Container>
+  <Container style={{ margin: 20 }}>
     <Message size="huge" negative icon>
       <Icon name="exclamation triangle" />
       <Message.Content>

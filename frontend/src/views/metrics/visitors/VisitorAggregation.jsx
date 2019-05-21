@@ -1,46 +1,30 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Statistic, Popup } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import numeral from 'numeral'
 import { fetchCount } from './actions'
+import NumericalStatistic from '../../statistics/NumericalStatistic'
 
-class VisitorAggregation extends Component {
-  async componentDidMount() {
-    await this.props.fetchCount(this.props.fromDate, this.props.toDate)
-  }
-
-  async componentDidUpdate(prevProps) {
-    if (prevProps.fromDate !== this.props.fromDate || prevProps.toDate !== this.props.toDate) {
-      await this.props.fetchCount(this.props.fromDate, this.props.toDate)
-    }
-  }
-
-  render() {
-    return (
-      <Popup
-        content="A visitor is someone interacting with the website under a given time period."
-        trigger={<Statistic label="# Visitors" value={this.props.count} inverted />}
-      />
-    )
-  }
-}
+const VisitorAggregation = props => (
+  <NumericalStatistic
+    info="A visitor is someone interacting with the website under a given time period."
+    label="# Visitors"
+    value={numeral(props.count).format('0a')}
+    fetchCount={props.fetchCount}
+  />
+)
 
 VisitorAggregation.propTypes = {
-  count: PropTypes.number.isRequired,
+  count: PropTypes.any.isRequired,
   fetchCount: PropTypes.func.isRequired,
-  fromDate: PropTypes.string.isRequired,
-  toDate: PropTypes.string.isRequired,
 }
 
 function mapStateToProps(applicationState) {
-  const globalState = applicationState.global
   const visitorState = applicationState.visitors
 
   return {
     count: visitorState.get('count'),
-    fromDate: globalState.get('fromDate'),
-    toDate: globalState.get('toDate'),
   }
 }
 
