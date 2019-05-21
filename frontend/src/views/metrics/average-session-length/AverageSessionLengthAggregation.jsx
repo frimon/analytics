@@ -10,13 +10,13 @@ const AverageSessionAggregation = props => (
   <NumericalStatistic
     info="A session is defined as a group of interactions one user takes within a given time frame on your website. This metric tells you how long a session is on an average."
     label="Avg. session length (seconds)"
-    value={numeral(props.count).format('0.0a')}
+    value={numeral(props.average).format('0.0a')}
     fetchCount={props.fetchCount}
   />
 )
 
 AverageSessionAggregation.propTypes = {
-  count: PropTypes.any.isRequired,
+  average: PropTypes.any.isRequired,
   fetchCount: PropTypes.func.isRequired,
 }
 
@@ -24,7 +24,7 @@ function mapStateToProps(applicationState) {
   const averageSessionLengthState = applicationState.averageSessionLength
 
   return {
-    count: averageSessionLengthState.get('count'),
+    average: averageSessionLengthState.get('average'),
   }
 }
 

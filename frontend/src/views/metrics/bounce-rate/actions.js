@@ -13,9 +13,9 @@ export function setData(data) {
   }
 }
 
-export function setCount(count) {
+export function setAverage(count) {
   return {
-    type: buildType('setCount'),
+    type: buildType('setAverage'),
     count,
   }
 }
@@ -53,6 +53,6 @@ export function fetchCount(from, to) {
 
     const json = await response.json()
 
-    return dispatch(setCount(json.data))
+    return dispatch(setAverage(json.data))
   }
 }

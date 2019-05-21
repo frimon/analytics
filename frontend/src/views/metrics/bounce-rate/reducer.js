@@ -3,7 +3,7 @@ import Immutable from 'immutable'
 const actionPrefix = '@@BOUNCE_RATE'
 const initialState = Immutable.fromJS({
   data: [],
-  count: 0,
+  average: 0,
 })
 
 export default (state = initialState, action) => {
@@ -18,8 +18,8 @@ export default (state = initialState, action) => {
       return state.set('data', Immutable.fromJS(action.data))
     }
 
-    case 'setCount': {
-      return state.set('count', Immutable.fromJS(action.count))
+    case 'setAverage': {
+      return state.set('average', Immutable.fromJS(action.count))
     }
 
     default:

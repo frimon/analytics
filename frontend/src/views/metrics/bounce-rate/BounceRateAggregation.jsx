@@ -10,13 +10,13 @@ const BounceRateAggregation = props => (
   <NumericalStatistic
     info="Bounce rate is the percentage of visitors to a particular website who navigate away from the site after viewing only one page. A high bounce rate can occur if your users find your content non-satisfactory."
     label="Bounce Rate"
-    value={numeral(props.count).format('0.0%')}
+    value={numeral(props.average).format('0.0%')}
     fetchCount={props.fetchCount}
   />
 )
 
 BounceRateAggregation.propTypes = {
-  count: PropTypes.any.isRequired,
+  average: PropTypes.any.isRequired,
   fetchCount: PropTypes.func.isRequired,
 }
 
@@ -24,7 +24,7 @@ function mapStateToProps(applicationState) {
   const bounceRateState = applicationState.bounceRate
 
   return {
-    count: bounceRateState.get('count'),
+    average: bounceRateState.get('average'),
   }
 }
 
