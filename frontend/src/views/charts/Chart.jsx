@@ -28,7 +28,7 @@ const ChartComponent = (props) => {
           chartType={props.chartType}
           data={props.data}
           loader={loader}
-          options={props.options}
+          options={{ ...props.options, legend: { position: 'none' }, chartArea: { width: '90%' } }}
           rootProps={{ 'data-testid': '1' }}
         />
       </Grid.Column>
