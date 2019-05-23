@@ -1,4 +1,4 @@
-# Web analytics
+# Web analytics 📊
 
 ![Dashboard screenshot](https://raw.githubusercontent.com/frimon/analytics/master/screenshot.png)
 
@@ -9,7 +9,7 @@
 * Docker
 * Node v10 with yarn
 
-### Backend
+### Backend 🔨
 
 Go to backend directory
 `cd backend`
@@ -23,7 +23,7 @@ Installing dependencies
 Starting HTTP server
 `yarn start`
 
-### Frontend
+### Frontend 🖥
 
 Go to frontend directory
 `cd backend`
@@ -34,7 +34,7 @@ Installing dependencies
 Starting HTTP server
 `yarn start`
 
-### Tracking
+### Tracking 🕵️
 
 Go to tracking directory
 `cd tracking`
