@@ -4,6 +4,7 @@
 
 const joi = require('@hapi/joi')
 
+const FIELD_UNIQUE = joi.string().allow('').optional()
 const FIELD_FROM = joi.date().iso().required().error(new Error('from: Has to be a valid ISO8601 date'))
 const FIELD_TO = joi.date().iso().error(new Error('to: Has to be a valid ISO8601 date'))
 const FIELD_UNIT = joi.string().regex(/^(month|day|hour|minute)$/).required().error(new Error('unit: must be one of following month, day, hour, minute'))
@@ -32,6 +33,7 @@ async function validateGetTimeseries(ctx, next) {
     from: FIELD_FROM,
     to: FIELD_TO,
     unit: FIELD_UNIT,
+    unique: FIELD_UNIQUE,
   })
 
   return validate(schema, ctx, next)
@@ -42,6 +44,7 @@ async function validateGetNumeric(ctx, next) {
   const schema = joi.object().keys({
     from: FIELD_FROM,
     to: FIELD_TO,
+    unique: FIELD_UNIQUE,
   })
 
   return validate(schema, ctx, next)
