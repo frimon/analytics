@@ -8,7 +8,7 @@ import DataUnit from './DataUnit'
 const MenuComponent = () => (
   <Menu>
     <Menu.Item as={NavLink} to="/" exact>Dashboard</Menu.Item>
-    <Menu.Item as={NavLink} to="/events" exact>Events</Menu.Item>
+    <Menu.Item as={NavLink} to="/events">Events</Menu.Item>
 
     <Menu.Menu position="right">
       <DataUnit />

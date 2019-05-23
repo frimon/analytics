@@ -5,13 +5,9 @@ import {
   Grid, Dimmer, Loader, Segment,
 } from 'semantic-ui-react'
 
-const ChartComponent = (props) => {
-  if (props.data.length === 0) {
-    return (
-      <div />
-    )
-  }
+const hasDataPoints = (data = []) => data.length > 1
 
+const ChartComponent = (props) => {
   const loader = (
     <Segment placeholder>
       <Dimmer active inverted>
@@ -20,14 +16,18 @@ const ChartComponent = (props) => {
     </Segment>
   )
 
+  if (!hasDataPoints(props.data)) {
+    return loader
+  }
+
   return (
     <Grid.Row>
       <Grid.Column>
         <Chart
           height={props.height}
           chartType={props.chartType}
-          loader={loader}
           data={props.data}
+          loader={loader}
           options={props.options}
           rootProps={{ 'data-testid': '1' }}
         />

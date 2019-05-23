@@ -14,6 +14,7 @@ import BounceRateAggregation from '../metrics/bounce-rate/BounceRateAggregation'
 
 const Overview = () => (
   <Container>
+    <h1>Dashboard</h1>
     <Segment color="blue" inverted>
       <Grid padded="vertically" columns="equal" divided>
         <Grid.Column stretched className="statsColumn" tablet="8" computer="3" color="blue" textAlign="center">
